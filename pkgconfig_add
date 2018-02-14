@@ -1,0 +1,25 @@
+# This file contains additional pkgconfig build requirements that did
+# not get picked up automatically. One name per line, no whitespace.
+dbus-1
+fontconfig
+glib-2.0
+harfbuzz
+jsoncpp
+lcms2
+libevent
+libpng
+libpulse
+libpulse-mainloop-glib
+libxml-2.0
+libxslt
+nss
+opus
+protobuf
+Qt5WebChannel
+Qt5Location
+xcomposite
+xcursor
+xi
+xrandr
+xtst
+zlib

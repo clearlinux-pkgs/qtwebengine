@@ -1,0 +1,13 @@
+# This file contains additional build requirements that did not get
+# picked up automatically. One name per line, no whitespace.
+bison
+flex
+gperf
+ninja
+alsa-lib-dev
+icu4c-dev
+libjpeg-turbo-dev
+libvpx-dev
+libwebp-dev
+qttools-dev
+snappy-dev
