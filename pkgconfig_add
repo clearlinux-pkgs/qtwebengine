@@ -12,6 +12,9 @@ libpulse
 libpulse-mainloop-glib
 libxml-2.0
 libxslt
+libwebp
+libwebpmux
+libwebpdemux
 nss
 opus
 protobuf

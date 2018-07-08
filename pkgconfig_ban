@@ -3,3 +3,6 @@
 icu-le-hb
 vdpau
 libgflags
+QtWebEngineCore
+Qt5WebEngine
+Qt5WebEngineWidgets

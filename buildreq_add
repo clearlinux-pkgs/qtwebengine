@@ -3,11 +3,12 @@
 bison
 flex
 gperf
+python
 ninja
 alsa-lib-dev
 icu4c-dev
 libjpeg-turbo-dev
 libvpx-dev
-libwebp-dev
 qttools-dev
 snappy-dev
+libsrtp-dev

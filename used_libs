@@ -9,6 +9,7 @@ libQt5Quick.so.5
 libQt5QuickWidgets.so.5
 libQt5WebChannel.so.5
 libQt5Widgets.so.5
+libX11-xcb.so.1
 libX11.so.6
 libXcomposite.so.1
 libXcursor.so.1
@@ -22,11 +23,12 @@ libasound.so.2
 libc.so.6
 libdbus-1.so.3
 libdl.so.2
-libevent-2.0.so.5
+libevent-2.1.so.6
 libexpat.so.1
 libfontconfig.so.1
 libfreetype.so.6
 libgcc_s.so.1
+libglib-2.0.so.0
 libharfbuzz.so.0
 libjpeg.so.62
 liblcms2.so.2
@@ -38,10 +40,11 @@ libopus.so.0
 libpng16.so.16
 libpthread.so.0
 librt.so.1
-libsmime3.so
 libsnappy.so.1
 libstdc++.so.6
+libvpx.so.5
 libwebp.so.7
 libwebpdemux.so.2
 libwebpmux.so.3
+libxcb.so.1
 libz.so.1
