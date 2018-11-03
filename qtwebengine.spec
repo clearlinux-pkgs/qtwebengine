@@ -4,16 +4,17 @@
 #
 Name     : qtwebengine
 Version  : 5.11.1.clean
-Release  : 9
+Release  : 10
 URL      : https://src.fedoraproject.org/repo/pkgs/rpms/qt5-qtwebengine/qtwebengine-everywhere-src-5.11.1-clean.tar.xz/sha512/59e9ea806e81ca56c858b7f391fd9c27ea889090e3c6f6168ffea6bd13fd2f78f7301b1f4487a79dea2ea48066fa657cd53a1d8c584258e4738b9030b970aea4/qtwebengine-everywhere-src-5.11.1-clean.tar.xz
 Source0  : https://src.fedoraproject.org/repo/pkgs/rpms/qt5-qtwebengine/qtwebengine-everywhere-src-5.11.1-clean.tar.xz/sha512/59e9ea806e81ca56c858b7f391fd9c27ea889090e3c6f6168ffea6bd13fd2f78f7301b1f4487a79dea2ea48066fa657cd53a1d8c584258e4738b9030b970aea4/qtwebengine-everywhere-src-5.11.1-clean.tar.xz
 Summary  : tlslite implements SSL and TLS.
 Group    : Development/Tools
-License  : AFL-2.0 APSL-2.0 Apache-2.0 Artistic-2.0 BSD-2-Clause BSD-3-Clause BSD-3-Clause-Clear BSL-1.0 ClArtistic DOC FTL GFDL-1.2 GPL-2.0 GPL-3.0 HPND ICU IJG ISC LGPL-2.0 LGPL-2.1 LGPL-3.0 Libpng MIT MPL-1.1 MPL-2.0-no-copyleft-exception MS-PL NCSA NTP OFL-1.1 OpenSSL SGI-B-2.0 Unlicense Zlib bzip2-1.0.6
-Requires: qtwebengine-bin
-Requires: qtwebengine-lib
-Requires: qtwebengine-license
-Requires: qtwebengine-data
+License  : AFL-2.0 APSL-2.0 Apache-2.0 Artistic-1.0-Perl Artistic-2.0 BSD-2-Clause BSD-3-Clause BSD-3-Clause-Clear BSL-1.0 ClArtistic DOC FTL GFDL-1.2 GPL-2.0 GPL-3.0 HPND ICU IJG ISC LGPL-2.0 LGPL-2.1 LGPL-3.0 Libpng MIT MPL-1.1 MPL-2.0-no-copyleft-exception MS-PL NCSA NTP OFL-1.1 OpenSSL SGI-B-2.0 Unlicense Zlib bzip2-1.0.6
+Requires: qtwebengine-bin = %{version}-%{release}
+Requires: qtwebengine-data = %{version}-%{release}
+Requires: qtwebengine-lib = %{version}-%{release}
+Requires: qtwebengine-libexec = %{version}-%{release}
+Requires: qtwebengine-license = %{version}-%{release}
 Requires: Sphinx
 Requires: nose
 Requires: pylint
@@ -23,9 +24,13 @@ Requires: six
 Requires: tox
 BuildRequires : alsa-lib-dev
 BuildRequires : bison
-BuildRequires : cmake
+BuildRequires : buildreq-cmake
+BuildRequires : buildreq-cpan
+BuildRequires : buildreq-distutils3
+BuildRequires : buildreq-golang
+BuildRequires : buildreq-qmake
+BuildRequires : buildreq-scons
 BuildRequires : flex
-BuildRequires : go
 BuildRequires : gperf
 BuildRequires : grep
 BuildRequires : icu4c-dev
@@ -33,8 +38,6 @@ BuildRequires : libjpeg-turbo-dev
 BuildRequires : libsrtp-dev
 BuildRequires : libvpx-dev
 BuildRequires : ninja
-BuildRequires : pbr
-BuildRequires : pip
 BuildRequires : pkgconfig(Qt5Core)
 BuildRequires : pkgconfig(Qt5Designer)
 BuildRequires : pkgconfig(Qt5Gui)
@@ -105,11 +108,7 @@ BuildRequires : pkgconfig(xvmc)
 BuildRequires : pkgconfig(xxf86vm)
 BuildRequires : pkgconfig(zlib)
 BuildRequires : python
-BuildRequires : python3-dev
-BuildRequires : qtbase-dev
-BuildRequires : qtbase-extras
 BuildRequires : qttools-dev
-BuildRequires : scons
 BuildRequires : sed
 BuildRequires : setuptools
 BuildRequires : six
@@ -126,11 +125,20 @@ to select sub nodes or ranges. A flexible Input/Output mechanism is
 available, with existing HTTP and FTP modules and combined to an
 URI library.
 
+%package abi
+Summary: abi components for the qtwebengine package.
+Group: Default
+
+%description abi
+abi components for the qtwebengine package.
+
+
 %package bin
 Summary: bin components for the qtwebengine package.
 Group: Binaries
-Requires: qtwebengine-data
-Requires: qtwebengine-license
+Requires: qtwebengine-data = %{version}-%{release}
+Requires: qtwebengine-libexec = %{version}-%{release}
+Requires: qtwebengine-license = %{version}-%{release}
 
 %description bin
 bin components for the qtwebengine package.
@@ -147,31 +155,33 @@ data components for the qtwebengine package.
 %package dev
 Summary: dev components for the qtwebengine package.
 Group: Development
-Requires: qtwebengine-lib
-Requires: qtwebengine-bin
-Requires: qtwebengine-data
-Provides: qtwebengine-devel
+Requires: qtwebengine-lib = %{version}-%{release}
+Requires: qtwebengine-bin = %{version}-%{release}
+Requires: qtwebengine-data = %{version}-%{release}
+Provides: qtwebengine-devel = %{version}-%{release}
 
 %description dev
 dev components for the qtwebengine package.
 
 
-%package doc
-Summary: doc components for the qtwebengine package.
-Group: Documentation
-
-%description doc
-doc components for the qtwebengine package.
-
-
 %package lib
 Summary: lib components for the qtwebengine package.
 Group: Libraries
-Requires: qtwebengine-data
-Requires: qtwebengine-license
+Requires: qtwebengine-data = %{version}-%{release}
+Requires: qtwebengine-libexec = %{version}-%{release}
+Requires: qtwebengine-license = %{version}-%{release}
 
 %description lib
 lib components for the qtwebengine package.
+
+
+%package libexec
+Summary: libexec components for the qtwebengine package.
+Group: Default
+Requires: qtwebengine-license = %{version}-%{release}
+
+%description libexec
+libexec components for the qtwebengine package.
 
 
 %package license
@@ -195,439 +205,451 @@ test -r config.log && cat config.log
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1531009639
+export SOURCE_DATE_EPOCH=1541277319
 rm -rf %{buildroot}
-mkdir -p %{buildroot}/usr/share/doc/qtwebengine
-cp LICENSE.Chromium %{buildroot}/usr/share/doc/qtwebengine/LICENSE.Chromium
-cp LICENSE.GPL3-EXCEPT %{buildroot}/usr/share/doc/qtwebengine/LICENSE.GPL3-EXCEPT
-cp LICENSE.GPL2 %{buildroot}/usr/share/doc/qtwebengine/LICENSE.GPL2
-cp LICENSE.GPL3 %{buildroot}/usr/share/doc/qtwebengine/LICENSE.GPL3
-cp LICENSE.LGPL3 %{buildroot}/usr/share/doc/qtwebengine/LICENSE.LGPL3
-cp LICENSE.GPLv3 %{buildroot}/usr/share/doc/qtwebengine/LICENSE.GPLv3
-cp src/3rdparty/chromium/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_LICENSE
-cp src/3rdparty/chromium/LICENSE.chromium_os %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_LICENSE.chromium_os
-cp src/3rdparty/chromium/v8/LICENSE.v8 %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_v8_LICENSE.v8
-cp src/3rdparty/chromium/v8/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_v8_LICENSE
-cp src/3rdparty/chromium/v8/LICENSE.strongtalk %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_v8_LICENSE.strongtalk
-cp src/3rdparty/chromium/v8/LICENSE.fdlibm %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_v8_LICENSE.fdlibm
-cp src/3rdparty/chromium/v8/LICENSE.valgrind %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_v8_LICENSE.valgrind
-cp src/3rdparty/chromium/v8/third_party/colorama/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_v8_third_party_colorama_LICENSE
-cp src/3rdparty/chromium/v8/third_party/inspector_protocol/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_v8_third_party_inspector_protocol_LICENSE
-cp src/3rdparty/chromium/v8/src/third_party/utf8-decoder/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_v8_src_third_party_utf8-decoder_LICENSE
-cp src/3rdparty/chromium/v8/src/third_party/vtune/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_v8_src_third_party_vtune_LICENSE
-cp src/3rdparty/chromium/v8/src/third_party/valgrind/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_v8_src_third_party_valgrind_LICENSE
-cp src/3rdparty/chromium/buildtools/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_buildtools_LICENSE
-cp src/3rdparty/chromium/ppapi/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_ppapi_LICENSE
-cp src/3rdparty/chromium/base/third_party/icu/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_base_third_party_icu_LICENSE
-cp src/3rdparty/chromium/base/third_party/dmg_fp/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_base_third_party_dmg_fp_LICENSE
-cp src/3rdparty/chromium/base/third_party/symbolize/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_base_third_party_symbolize_LICENSE
-cp src/3rdparty/chromium/base/third_party/libevent/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_base_third_party_libevent_LICENSE
-cp src/3rdparty/chromium/base/third_party/superfasthash/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_base_third_party_superfasthash_LICENSE
-cp src/3rdparty/chromium/base/third_party/xdg_user_dirs/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_base_third_party_xdg_user_dirs_LICENSE
-cp src/3rdparty/chromium/base/third_party/valgrind/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_base_third_party_valgrind_LICENSE
-cp src/3rdparty/chromium/base/third_party/xdg_mime/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_base_third_party_xdg_mime_LICENSE
-cp src/3rdparty/chromium/base/third_party/dynamic_annotations/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_base_third_party_dynamic_annotations_LICENSE
-cp src/3rdparty/chromium/base/third_party/nspr/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_base_third_party_nspr_LICENSE
-cp src/3rdparty/chromium/chrome/third_party/chromevox/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_chrome_third_party_chromevox_LICENSE
-cp src/3rdparty/chromium/chrome/third_party/chromevox/third_party/closure-library/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_chrome_third_party_chromevox_third_party_closure-library_LICENSE
-cp src/3rdparty/chromium/components/url_pattern_index/copying_file_stream.h %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_components_url_pattern_index_copying_file_stream.h
-cp src/3rdparty/chromium/mojo/public/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_mojo_public_LICENSE
-cp src/3rdparty/chromium/net/third_party/nss/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_net_third_party_nss_LICENSE
-cp src/3rdparty/chromium/net/third_party/mozilla_security_manager/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_net_third_party_mozilla_security_manager_LICENSE
-cp src/3rdparty/chromium/tools/gyp/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_tools_gyp_LICENSE
-cp src/3rdparty/chromium/tools/symsrc/COPYING-pefile %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_tools_symsrc_COPYING-pefile
-cp src/3rdparty/chromium/tools/win/ChromeDebug/ChromeDebug/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_tools_win_ChromeDebug_ChromeDebug_LICENSE
-cp src/3rdparty/chromium/third_party/typ/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_typ_LICENSE
-cp src/3rdparty/chromium/third_party/libusb/src/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libusb_src_COPYING
-cp src/3rdparty/chromium/third_party/fontconfig/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_fontconfig_LICENSE
-cp src/3rdparty/chromium/third_party/fontconfig/src/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_fontconfig_src_COPYING
-cp src/3rdparty/chromium/third_party/molokocacao/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_molokocacao_LICENSE
-cp src/3rdparty/chromium/third_party/ow2_asm/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ow2_asm_LICENSE
-cp src/3rdparty/chromium/third_party/decklink/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_decklink_LICENSE
-cp src/3rdparty/chromium/third_party/ced/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ced_LICENSE
-cp src/3rdparty/chromium/third_party/ced/src/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ced_src_LICENSE
-cp src/3rdparty/chromium/third_party/icu/license.html %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_icu_license.html
-cp src/3rdparty/chromium/third_party/icu/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_icu_LICENSE
-cp src/3rdparty/chromium/third_party/icu/scripts/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_icu_scripts_LICENSE
-cp src/3rdparty/chromium/third_party/crc32c/src/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_crc32c_src_LICENSE
-cp src/3rdparty/chromium/third_party/bouncycastle/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_bouncycastle_LICENSE
-cp src/3rdparty/chromium/third_party/blanketjs/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_blanketjs_LICENSE
-cp src/3rdparty/chromium/third_party/libwebm/source/LICENSE.TXT %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libwebm_source_LICENSE.TXT
-cp src/3rdparty/chromium/third_party/guava/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_guava_LICENSE
-cp src/3rdparty/chromium/third_party/icu4j/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_icu4j_LICENSE
-cp src/3rdparty/chromium/third_party/wayland-protocols/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_wayland-protocols_LICENSE
-cp src/3rdparty/chromium/third_party/wayland-protocols/src/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_wayland-protocols_src_COPYING
-cp src/3rdparty/chromium/third_party/iaccessible2/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_iaccessible2_LICENSE
-cp src/3rdparty/chromium/third_party/pywebsocket/src/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_pywebsocket_src_LICENSE
-cp src/3rdparty/chromium/third_party/ocmock/License.txt %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ocmock_License.txt
-cp src/3rdparty/chromium/third_party/chaijs/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_chaijs_LICENSE
-cp src/3rdparty/chromium/third_party/ub-uiautomator/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ub-uiautomator_LICENSE
-cp src/3rdparty/chromium/third_party/visualmetrics/src/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_visualmetrics_src_LICENSE
-cp src/3rdparty/chromium/third_party/devscripts/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devscripts_COPYING
-cp src/3rdparty/chromium/third_party/mach_override/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_mach_override_LICENSE
-cp src/3rdparty/chromium/third_party/axe-core/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_axe-core_LICENSE
-cp src/3rdparty/chromium/third_party/zlib/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_zlib_LICENSE
-cp src/3rdparty/chromium/third_party/flac/COPYING.LGPL %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_flac_COPYING.LGPL
-cp src/3rdparty/chromium/third_party/flac/COPYING.GPL %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_flac_COPYING.GPL
-cp src/3rdparty/chromium/third_party/flac/COPYING.FDL %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_flac_COPYING.FDL
-cp src/3rdparty/chromium/third_party/flac/COPYING.Xiph %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_flac_COPYING.Xiph
-cp src/3rdparty/chromium/third_party/libpng/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libpng_LICENSE
-cp src/3rdparty/chromium/third_party/isimpledom/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_isimpledom_LICENSE
-cp src/3rdparty/chromium/third_party/pymock/LICENSE.txt %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_pymock_LICENSE.txt
-cp src/3rdparty/chromium/third_party/dom_distiller_js/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_dom_distiller_js_LICENSE
-cp src/3rdparty/chromium/third_party/libsrtp/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libsrtp_LICENSE
-cp src/3rdparty/chromium/third_party/intellij/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_intellij_LICENSE
-cp src/3rdparty/chromium/third_party/custom_tabs_client/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_custom_tabs_client_LICENSE
-cp src/3rdparty/chromium/third_party/libevdev/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libevdev_LICENSE
-cp src/3rdparty/chromium/third_party/tlslite/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_tlslite_LICENSE
-cp src/3rdparty/chromium/third_party/shaderc/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_shaderc_LICENSE
-cp src/3rdparty/chromium/third_party/shaderc/src/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_shaderc_src_LICENSE
-cp src/3rdparty/chromium/third_party/shaderc/src/third_party/LICENSE.spirv-tools %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_shaderc_src_third_party_LICENSE.spirv-tools
-cp src/3rdparty/chromium/third_party/shaderc/src/third_party/LICENSE.glslang %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_shaderc_src_third_party_LICENSE.glslang
-cp src/3rdparty/chromium/third_party/flatbuffers/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_flatbuffers_LICENSE
-cp src/3rdparty/chromium/third_party/flatbuffers/src/LICENSE.txt %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_flatbuffers_src_LICENSE.txt
-cp src/3rdparty/chromium/third_party/yasm/source/patched-yasm/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_yasm_source_patched-yasm_COPYING
-cp src/3rdparty/chromium/third_party/bazel/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_bazel_LICENSE
-cp src/3rdparty/chromium/third_party/libxml/src/Copyright %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libxml_src_Copyright
-cp src/3rdparty/chromium/third_party/libxml/src/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libxml_src_COPYING
-cp src/3rdparty/chromium/third_party/modp_b64/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_modp_b64_LICENSE
-cp src/3rdparty/chromium/third_party/sudden_motion_sensor/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_sudden_motion_sensor_LICENSE
-cp src/3rdparty/chromium/third_party/ots/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ots_LICENSE
-cp src/3rdparty/chromium/third_party/apple_apsl/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_apple_apsl_LICENSE
-cp src/3rdparty/chromium/third_party/webdriver/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_webdriver_LICENSE
-cp src/3rdparty/chromium/third_party/webdriver/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_webdriver_COPYING
-cp src/3rdparty/chromium/third_party/minigbm/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_minigbm_LICENSE
-cp src/3rdparty/chromium/third_party/minigbm/src/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_minigbm_src_LICENSE
-cp src/3rdparty/chromium/third_party/ffmpeg/COPYING.GPLv2 %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ffmpeg_COPYING.GPLv2
-cp src/3rdparty/chromium/third_party/ffmpeg/COPYING.LGPLv2.1 %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ffmpeg_COPYING.LGPLv2.1
-cp src/3rdparty/chromium/third_party/ffmpeg/COPYING.GPLv3 %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ffmpeg_COPYING.GPLv3
-cp src/3rdparty/chromium/third_party/ffmpeg/COPYING.LGPLv3 %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ffmpeg_COPYING.LGPLv3
-cp src/3rdparty/chromium/third_party/openvr/src/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_openvr_src_LICENSE
-cp src/3rdparty/chromium/third_party/glslang/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_glslang_LICENSE
-cp src/3rdparty/chromium/third_party/usrsctp/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_usrsctp_LICENSE
-cp src/3rdparty/chromium/third_party/usrsctp/usrsctplib/LICENSE.md %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_usrsctp_usrsctplib_LICENSE.md
-cp src/3rdparty/chromium/third_party/vulkan/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_vulkan_LICENSE
-cp src/3rdparty/chromium/third_party/node/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_node_LICENSE
-cp src/3rdparty/chromium/third_party/hamcrest/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_hamcrest_LICENSE
-cp src/3rdparty/chromium/third_party/libjpeg/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libjpeg_LICENSE
-cp src/3rdparty/chromium/third_party/googletest/src/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_googletest_src_LICENSE
-cp src/3rdparty/chromium/third_party/googletest/src/googletest/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_googletest_src_googletest_LICENSE
-cp src/3rdparty/chromium/third_party/googletest/src/googlemock/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_googletest_src_googlemock_LICENSE
-cp src/3rdparty/chromium/third_party/googletest/src/googlemock/scripts/generator/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_googletest_src_googlemock_scripts_generator_LICENSE
-cp src/3rdparty/chromium/third_party/gestures/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_gestures_LICENSE
-cp src/3rdparty/chromium/third_party/gestures/gestures/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_gestures_gestures_LICENSE
-cp src/3rdparty/chromium/third_party/pycoverage/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_pycoverage_LICENSE
-cp src/3rdparty/chromium/third_party/xstream/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_xstream_LICENSE
-cp src/3rdparty/chromium/third_party/espresso/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_espresso_LICENSE
-cp src/3rdparty/chromium/third_party/libudev/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libudev_LICENSE
-cp src/3rdparty/chromium/third_party/Python-Markdown/LICENSE.md %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_Python-Markdown_LICENSE.md
-cp src/3rdparty/chromium/third_party/fips181/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_fips181_COPYING
-cp src/3rdparty/chromium/third_party/polymer/v1_0/components-chromium/polymer/LICENSE.txt %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_polymer_v1_0_components-chromium_polymer_LICENSE.txt
-cp src/3rdparty/chromium/third_party/xdg-utils/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_xdg-utils_LICENSE
-cp src/3rdparty/chromium/third_party/gson/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_gson_LICENSE
-cp src/3rdparty/chromium/third_party/cros_system_api/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_cros_system_api_LICENSE
-cp src/3rdparty/chromium/third_party/qcms/src/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_qcms_src_COPYING
-cp src/3rdparty/chromium/third_party/libjpeg_turbo/LICENSE.md %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libjpeg_turbo_LICENSE.md
-cp src/3rdparty/chromium/third_party/libsecret/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libsecret_LICENSE
-cp src/3rdparty/chromium/third_party/pyelftools/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_pyelftools_LICENSE
-cp src/3rdparty/chromium/third_party/pyelftools/elftools/construct/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_pyelftools_elftools_construct_LICENSE
-cp src/3rdparty/chromium/third_party/pystache/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_pystache_LICENSE
-cp src/3rdparty/chromium/third_party/usb_ids/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_usb_ids_LICENSE
-cp src/3rdparty/chromium/third_party/swiftshader/LICENSE.txt %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_LICENSE.txt
-cp src/3rdparty/chromium/third_party/swiftshader/third_party/subzero/LICENSE.TXT %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_subzero_LICENSE.TXT
-cp src/3rdparty/chromium/third_party/swiftshader/third_party/LLVM/LICENSE.TXT %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_LLVM_LICENSE.TXT
-cp src/3rdparty/chromium/third_party/swiftshader/third_party/LLVM/autoconf/LICENSE.TXT %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_LLVM_autoconf_LICENSE.TXT
-cp src/3rdparty/chromium/third_party/swiftshader/third_party/LLVM/projects/sample/autoconf/LICENSE.TXT %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_LLVM_projects_sample_autoconf_LICENSE.TXT
-cp src/3rdparty/chromium/third_party/swiftshader/third_party/LLVM/utils/unittest/googletest/LICENSE.TXT %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_LLVM_utils_unittest_googletest_LICENSE.TXT
-cp src/3rdparty/chromium/third_party/swiftshader/third_party/llvm-subzero/LICENSE.TXT %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_llvm-subzero_LICENSE.TXT
-cp src/3rdparty/chromium/third_party/objenesis/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_objenesis_LICENSE
-cp src/3rdparty/chromium/third_party/jsoncpp/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_jsoncpp_LICENSE
-cp src/3rdparty/chromium/third_party/boringssl/src/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_boringssl_src_LICENSE
-cp src/3rdparty/chromium/third_party/boringssl/src/third_party/android-cmake/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_boringssl_src_third_party_android-cmake_LICENSE
-cp src/3rdparty/chromium/third_party/boringssl/src/third_party/fiat/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_boringssl_src_third_party_fiat_LICENSE
-cp src/3rdparty/chromium/third_party/boringssl/src/third_party/googletest/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_boringssl_src_third_party_googletest_LICENSE
-cp src/3rdparty/chromium/third_party/pyftpdlib/src/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_pyftpdlib_src_LICENSE
-cp src/3rdparty/chromium/third_party/re2/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_re2_LICENSE
-cp src/3rdparty/chromium/third_party/re2/src/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_re2_src_LICENSE
-cp src/3rdparty/chromium/third_party/smhasher/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_smhasher_LICENSE
-cp src/3rdparty/chromium/third_party/libxslt/linux/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libxslt_linux_COPYING
-cp src/3rdparty/chromium/third_party/libxslt/src/Copyright %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libxslt_src_Copyright
-cp src/3rdparty/chromium/third_party/inspector_protocol/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_inspector_protocol_LICENSE
-cp src/3rdparty/chromium/third_party/WebKit/LICENSE_FOR_ABOUT_CREDITS %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_LICENSE_FOR_ABOUT_CREDITS
-cp src/3rdparty/chromium/third_party/WebKit/Tools/Scripts/webkitpy/thirdparty/mod_pywebsocket/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Tools_Scripts_webkitpy_thirdparty_mod_pywebsocket_COPYING
-cp src/3rdparty/chromium/third_party/WebKit/Tools/Scripts/webkitpy/thirdparty/wpt/wpt/LICENSE.md %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Tools_Scripts_webkitpy_thirdparty_wpt_wpt_LICENSE.md
-cp src/3rdparty/chromium/third_party/WebKit/Tools/Scripts/webkitpy/thirdparty/wpt/wpt/tools/html5lib/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Tools_Scripts_webkitpy_thirdparty_wpt_wpt_tools_html5lib_LICENSE
-cp src/3rdparty/chromium/third_party/WebKit/Tools/Scripts/webkitpy/thirdparty/wpt/wpt/tools/six/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Tools_Scripts_webkitpy_thirdparty_wpt_wpt_tools_six_LICENSE
-cp src/3rdparty/chromium/third_party/WebKit/Tools/Scripts/webkitpy/thirdparty/wpt/wpt/tools/wptserve/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Tools_Scripts_webkitpy_thirdparty_wpt_wpt_tools_wptserve_LICENSE
-cp src/3rdparty/chromium/third_party/WebKit/Source/platform/wtf/dtoa/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_platform_wtf_dtoa_LICENSE
-cp src/3rdparty/chromium/third_party/WebKit/Source/platform/wtf/dtoa/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_platform_wtf_dtoa_COPYING
-cp src/3rdparty/chromium/third_party/WebKit/Source/core/LICENSE-LGPL-2 %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_core_LICENSE-LGPL-2
-cp src/3rdparty/chromium/third_party/WebKit/Source/core/LICENSE-LGPL-2.1 %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_core_LICENSE-LGPL-2.1
-cp src/3rdparty/chromium/third_party/WebKit/Source/core/LICENSE-APPLE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_core_LICENSE-APPLE
-cp src/3rdparty/chromium/third_party/WebKit/Source/build/scripts/license.py %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_build_scripts_license.py
-cp src/3rdparty/chromium/third_party/WebKit/Source/devtools/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_LICENSE
-cp src/3rdparty/chromium/third_party/WebKit/Source/devtools/scripts/closure/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_scripts_closure_COPYING
-cp src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/audits2/lighthouse/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_audits2_lighthouse_LICENSE
-cp src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/formatter_worker/acorn/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_formatter_worker_acorn_LICENSE
-cp src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/terminal/xterm.js/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_terminal_xterm.js_LICENSE
-cp src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/cm_modes/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_cm_modes_LICENSE
-cp src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/cm/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_cm_LICENSE
-cp src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/cm/LICENSE_python %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_cm_LICENSE_python
-cp src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/audits2_worker/lighthouse/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_audits2_worker_lighthouse_LICENSE
-cp src/3rdparty/chromium/third_party/simplejson/LICENSE.txt %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_simplejson_LICENSE.txt
-cp src/3rdparty/chromium/third_party/pdfium/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_pdfium_LICENSE
-cp src/3rdparty/chromium/third_party/pdfium/third_party/pymock/LICENSE.txt %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_pdfium_third_party_pymock_LICENSE.txt
-cp src/3rdparty/chromium/third_party/markupsafe/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_markupsafe_LICENSE
-cp src/3rdparty/chromium/third_party/netty-tcnative/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_netty-tcnative_LICENSE
-cp src/3rdparty/chromium/third_party/mockito/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_mockito_LICENSE
-cp src/3rdparty/chromium/third_party/iccjpeg/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_iccjpeg_LICENSE
-cp src/3rdparty/chromium/third_party/jinja2/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_jinja2_LICENSE
-cp src/3rdparty/chromium/third_party/apache-portable-runtime/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_apache-portable-runtime_LICENSE
-cp src/3rdparty/chromium/third_party/sfntly/COPYING.txt %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_sfntly_COPYING.txt
-cp src/3rdparty/chromium/third_party/sfntly/src/cpp/COPYING.txt %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_sfntly_src_cpp_COPYING.txt
-cp src/3rdparty/chromium/third_party/s2cellid/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_s2cellid_LICENSE
-cp src/3rdparty/chromium/third_party/mt19937ar/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_mt19937ar_LICENSE
-cp src/3rdparty/chromium/third_party/expat/files/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_expat_files_COPYING
-cp src/3rdparty/chromium/third_party/libprotobuf-mutator/src/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libprotobuf-mutator_src_LICENSE
-cp src/3rdparty/chromium/third_party/proguard/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_proguard_LICENSE
-cp src/3rdparty/chromium/third_party/libsync/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libsync_LICENSE
-cp src/3rdparty/chromium/third_party/wds/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_wds_LICENSE
-cp src/3rdparty/chromium/third_party/wds/src/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_wds_src_COPYING
-cp src/3rdparty/chromium/third_party/flot/LICENSE.txt %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_flot_LICENSE.txt
-cp src/3rdparty/chromium/third_party/content_shell_fonts/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_content_shell_fonts_LICENSE
-cp src/3rdparty/chromium/third_party/metrics_proto/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_metrics_proto_LICENSE
-cp src/3rdparty/chromium/third_party/libaddressinput/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libaddressinput_LICENSE
-cp src/3rdparty/chromium/third_party/libaddressinput/src/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libaddressinput_src_LICENSE
-cp src/3rdparty/chromium/third_party/libaddressinput/src/cpp/LICENSE.chromium %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libaddressinput_src_cpp_LICENSE.chromium
-cp src/3rdparty/chromium/third_party/leakcanary/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_leakcanary_LICENSE
-cp src/3rdparty/chromium/third_party/checkstyle/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_checkstyle_LICENSE
-cp src/3rdparty/chromium/third_party/checkstyle/LICENSE.apache20 %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_checkstyle_LICENSE.apache20
-cp src/3rdparty/chromium/third_party/cld_3/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_cld_3_LICENSE
-cp src/3rdparty/chromium/third_party/cld_3/src/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_cld_3_src_LICENSE
-cp src/3rdparty/chromium/third_party/harfbuzz-ng/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_harfbuzz-ng_COPYING
-cp src/3rdparty/chromium/third_party/ijar/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ijar_LICENSE
-cp src/3rdparty/chromium/third_party/minizip/src/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_minizip_src_LICENSE
-cp src/3rdparty/chromium/third_party/hunspell/COPYING.MPL %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_hunspell_COPYING.MPL
-cp src/3rdparty/chromium/third_party/hunspell/COPYING.LESSER %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_hunspell_COPYING.LESSER
-cp src/3rdparty/chromium/third_party/hunspell/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_hunspell_COPYING
-cp src/3rdparty/chromium/third_party/gif_player/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_gif_player_LICENSE
-cp src/3rdparty/chromium/third_party/gvr-android-keyboard/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_gvr-android-keyboard_LICENSE
-cp src/3rdparty/chromium/third_party/ply/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ply_LICENSE
-cp src/3rdparty/chromium/third_party/ply/license.patch %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ply_license.patch
-cp src/3rdparty/chromium/third_party/javax_inject/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_javax_inject_LICENSE
-cp src/3rdparty/chromium/third_party/angle/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_angle_LICENSE
-cp src/3rdparty/chromium/third_party/angle/src/common/third_party/smhasher/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_angle_src_common_third_party_smhasher_LICENSE
-cp src/3rdparty/chromium/third_party/angle/src/third_party/compiler/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_angle_src_third_party_compiler_LICENSE
-cp src/3rdparty/chromium/third_party/angle/src/third_party/libXNVCtrl/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_angle_src_third_party_libXNVCtrl_LICENSE
-cp src/3rdparty/chromium/third_party/mesa/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_mesa_LICENSE
-cp src/3rdparty/chromium/third_party/mesa/src/src/gallium/drivers/radeon/LICENSE.TXT %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_mesa_src_src_gallium_drivers_radeon_LICENSE.TXT
-cp src/3rdparty/chromium/third_party/mesa/src/src/mapi/glapi/gen/license.py %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_mesa_src_src_mapi_glapi_gen_license.py
-cp src/3rdparty/chromium/third_party/mesa/src/docs/license.html %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_mesa_src_docs_license.html
-cp src/3rdparty/chromium/third_party/mesa/src/docs/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_mesa_src_docs_COPYING
-cp src/3rdparty/chromium/third_party/crashpad/crashpad/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_crashpad_crashpad_LICENSE
-cp src/3rdparty/chromium/third_party/crashpad/crashpad/third_party/apple_cf/APPLE_LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_crashpad_crashpad_third_party_apple_cf_APPLE_LICENSE
-cp src/3rdparty/chromium/third_party/material_design_icons/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_material_design_icons_LICENSE
-cp src/3rdparty/chromium/third_party/SPIRV-Tools/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_SPIRV-Tools_LICENSE
-cp src/3rdparty/chromium/third_party/SPIRV-Tools/src/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_SPIRV-Tools_src_LICENSE
-cp src/3rdparty/chromium/third_party/breakpad/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_breakpad_LICENSE
-cp src/3rdparty/chromium/third_party/breakpad/breakpad/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_breakpad_breakpad_LICENSE
-cp src/3rdparty/chromium/third_party/breakpad/breakpad/src/third_party/musl/COPYRIGHT %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_breakpad_breakpad_src_third_party_musl_COPYRIGHT
-cp src/3rdparty/chromium/third_party/breakpad/breakpad/src/third_party/curl/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_breakpad_breakpad_src_third_party_curl_COPYING
-cp src/3rdparty/chromium/third_party/breakpad/breakpad/src/third_party/libdisasm/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_breakpad_breakpad_src_third_party_libdisasm_LICENSE
-cp src/3rdparty/chromium/third_party/leveldatabase/src/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_leveldatabase_src_LICENSE
-cp src/3rdparty/chromium/third_party/jmake/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_jmake_LICENSE
-cp src/3rdparty/chromium/third_party/protobuf/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_protobuf_LICENSE
-cp src/3rdparty/chromium/third_party/mozilla/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_mozilla_LICENSE
-cp src/3rdparty/chromium/third_party/libvpx/source/libvpx/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libvpx_source_libvpx_LICENSE
-cp src/3rdparty/chromium/third_party/libvpx/source/libvpx/third_party/libwebm/LICENSE.TXT %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libvpx_source_libvpx_third_party_libwebm_LICENSE.TXT
-cp src/3rdparty/chromium/third_party/libvpx/source/libvpx/third_party/googletest/src/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libvpx_source_libvpx_third_party_googletest_src_LICENSE
-cp src/3rdparty/chromium/third_party/libvpx/source/libvpx/third_party/x86inc/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libvpx_source_libvpx_third_party_x86inc_LICENSE
-cp src/3rdparty/chromium/third_party/woff2/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_woff2_LICENSE
-cp src/3rdparty/chromium/third_party/libFuzzer/LICENSE.TXT %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libFuzzer_LICENSE.TXT
-cp src/3rdparty/chromium/third_party/mocha/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_mocha_LICENSE
-cp src/3rdparty/chromium/third_party/d3/src/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_d3_src_LICENSE
-cp src/3rdparty/chromium/third_party/wayland/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_wayland_LICENSE
-cp src/3rdparty/chromium/third_party/khronos/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_khronos_LICENSE
-cp src/3rdparty/chromium/third_party/sinonjs/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_sinonjs_LICENSE
-cp src/3rdparty/chromium/third_party/opus/src/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_opus_src_COPYING
-cp src/3rdparty/chromium/third_party/webrtc/LICENSE_THIRD_PARTY %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_webrtc_LICENSE_THIRD_PARTY
-cp src/3rdparty/chromium/third_party/webrtc/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_webrtc_LICENSE
-cp src/3rdparty/chromium/third_party/webrtc/license_template.txt %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_webrtc_license_template.txt
-cp src/3rdparty/chromium/third_party/webrtc/examples/androidapp/third_party/autobanh/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_webrtc_examples_androidapp_third_party_autobanh_LICENSE
-cp src/3rdparty/chromium/third_party/webrtc/examples/androidapp/third_party/autobanh/NOTICE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_webrtc_examples_androidapp_third_party_autobanh_NOTICE
-cp src/3rdparty/chromium/third_party/webrtc/examples/androidapp/third_party/autobanh/LICENSE.md %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_webrtc_examples_androidapp_third_party_autobanh_LICENSE.md
-cp src/3rdparty/chromium/third_party/webrtc/examples/objc/AppRTCMobile/third_party/SocketRocket/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_webrtc_examples_objc_AppRTCMobile_third_party_SocketRocket_LICENSE
-cp src/3rdparty/chromium/third_party/robolectric/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_robolectric_LICENSE
-cp src/3rdparty/chromium/third_party/freetype/src/docs/LICENSE.TXT %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_freetype_src_docs_LICENSE.TXT
-cp src/3rdparty/chromium/third_party/freetype/src/docs/GPLv2.TXT %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_freetype_src_docs_GPLv2.TXT
-cp src/3rdparty/chromium/third_party/pexpect/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_pexpect_LICENSE
-cp src/3rdparty/chromium/third_party/v4l-utils/COPYING.libv4l %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_v4l-utils_COPYING.libv4l
-cp src/3rdparty/chromium/third_party/libyuv/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libyuv_LICENSE
-cp src/3rdparty/chromium/third_party/motemplate/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_motemplate_LICENSE
-cp src/3rdparty/chromium/third_party/yara/src/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_yara_src_COPYING
-cp src/3rdparty/chromium/third_party/web-animations-js/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_web-animations-js_LICENSE
-cp src/3rdparty/chromium/third_party/web-animations-js/sources/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_web-animations-js_sources_COPYING
-cp src/3rdparty/chromium/third_party/jstemplate/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_jstemplate_COPYING
-cp src/3rdparty/chromium/third_party/libwebp/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libwebp_LICENSE
-cp src/3rdparty/chromium/third_party/errorprone/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_errorprone_LICENSE
-cp src/3rdparty/chromium/third_party/bspatch/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_bspatch_LICENSE
-cp src/3rdparty/chromium/third_party/requests/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_requests_LICENSE
-cp src/3rdparty/chromium/third_party/byte_buddy/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_byte_buddy_LICENSE
-cp src/3rdparty/chromium/third_party/tcmalloc/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_tcmalloc_LICENSE
-cp src/3rdparty/chromium/third_party/tcmalloc/vendor/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_tcmalloc_vendor_COPYING
-cp src/3rdparty/chromium/third_party/tcmalloc/vendor/packages/deb/copyright %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_tcmalloc_vendor_packages_deb_copyright
-cp src/3rdparty/chromium/third_party/skia/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_skia_LICENSE
-cp src/3rdparty/chromium/third_party/skia/third_party/gif/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_skia_third_party_gif_LICENSE
-cp src/3rdparty/chromium/third_party/skia/third_party/etc1/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_skia_third_party_etc1_LICENSE
-cp src/3rdparty/chromium/third_party/apk-patch-size-estimator/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_apk-patch-size-estimator_LICENSE
-cp src/3rdparty/chromium/third_party/qunit/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_qunit_LICENSE
-cp src/3rdparty/chromium/third_party/snappy/src/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_snappy_src_COPYING
-cp src/3rdparty/chromium/third_party/perfetto/NOTICE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_perfetto_NOTICE
-cp src/3rdparty/chromium/third_party/netty4/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_netty4_LICENSE
-cp src/3rdparty/chromium/third_party/accessibility_test_framework/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_accessibility_test_framework_LICENSE
-cp src/3rdparty/chromium/third_party/brotli/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_brotli_LICENSE
-cp src/3rdparty/chromium/third_party/libXNVCtrl/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libXNVCtrl_LICENSE
-cp src/3rdparty/chromium/third_party/gvr-android-sdk/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_gvr-android-sdk_LICENSE
-cp src/3rdparty/chromium/third_party/haha/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_haha_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/once/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_once_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/eslint-scope/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_eslint-scope_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/figures/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_figures_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/debug/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_debug_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/cli-width/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_cli-width_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/sprintf-js/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_sprintf-js_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/babel-code-frame/node_modules/chalk/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_babel-code-frame_node_modules_chalk_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/babel-code-frame/node_modules/strip-ansi/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_babel-code-frame_node_modules_strip-ansi_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/pluralize/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_pluralize_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/esutils/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_esutils_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/chardet/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_chardet_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/del/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_del_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/which/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_which_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/json-schema-traverse/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_json-schema-traverse_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/fast-levenshtein/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_fast-levenshtein_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/tmp/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_tmp_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/esprima/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_esprima_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/lru-cache/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_lru-cache_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/ajv/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ajv_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/flat-cache/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_flat-cache_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/concat-stream/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_concat-stream_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/signal-exit/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_signal-exit_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/balanced-match/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_balanced-match_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/is-fullwidth-code-point/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_is-fullwidth-code-point_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/object-assign/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_object-assign_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/semver/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_semver_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/concat-map/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_concat-map_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/js-tokens/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_js-tokens_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/string_decoder/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_string_decoder_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/eslint/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_eslint_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/escape-string-regexp/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_escape-string-regexp_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/cross-spawn/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_cross-spawn_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/espree/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_espree_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/co/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_co_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/fs.realpath/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_fs.realpath_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/mute-stream/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_mute-stream_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/process-nextick-args/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_process-nextick-args_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/external-editor/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_external-editor_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/functional-red-black-tree/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_functional-red-black-tree_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/chalk/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_chalk_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/chalk/node_modules/supports-color/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_chalk_node_modules_supports-color_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/chalk/node_modules/ansi-styles/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_chalk_node_modules_ansi-styles_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/minimatch/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_minimatch_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/fast-json-stable-stringify/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_fast-json-stable-stringify_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/cli-cursor/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_cli-cursor_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/esquery/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_esquery_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/pinkie-promise/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_pinkie-promise_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/table/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_table_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/write/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_write_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/ajv-keywords/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ajv-keywords_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/pseudomap/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_pseudomap_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/wrappy/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_wrappy_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/ms/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ms_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/estraverse/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_estraverse_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/shebang-regex/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_shebang-regex_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/array-uniq/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_array-uniq_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/core-util-is/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_core-util-is_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/globby/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_globby_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/require-uncached/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_require-uncached_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/ansi-escapes/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ansi-escapes_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/iconv-lite/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_iconv-lite_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/js-yaml/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_js-yaml_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/pinkie/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_pinkie_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/argparse/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_argparse_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/typedarray/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_typedarray_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/ansi-regex/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ansi-regex_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/minimist/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_minimist_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/inflight/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_inflight_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/mimic-fn/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_mimic-fn_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/prelude-ls/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_prelude-ls_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/rimraf/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_rimraf_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/slice-ansi/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_slice-ansi_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/optionator/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_optionator_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/isexe/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_isexe_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/pify/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_pify_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/path-is-absolute/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_path-is-absolute_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/strip-json-comments/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_strip-json-comments_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/util-deprecate/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_util-deprecate_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/through/LICENSE.MIT %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_through_LICENSE.MIT
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/through/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_through_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/color-convert/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_color-convert_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/os-tmpdir/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_os-tmpdir_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/safe-buffer/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_safe-buffer_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/acorn/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_acorn_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/deep-is/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_deep-is_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/run-async/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_run-async_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/json-stable-stringify-without-jsonify/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_json-stable-stringify-without-jsonify_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/circular-json/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_circular-json_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/text-table/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_text-table_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/readable-stream/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_readable-stream_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/glob/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_glob_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/supports-color/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_supports-color_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/has-flag/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_has-flag_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/wordwrap/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_wordwrap_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/resolve-from/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_resolve-from_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/is-resolvable/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_is-resolvable_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/onetime/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_onetime_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/path-is-inside/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_path-is-inside_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/fast-deep-equal/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_fast-deep-equal_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/progress/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_progress_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/doctrine/LICENSE.esprima %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_doctrine_LICENSE.esprima
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/doctrine/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_doctrine_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/is-path-inside/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_is-path-inside_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/acorn-jsx/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_acorn-jsx_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/acorn-jsx/node_modules/acorn/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_acorn-jsx_node_modules_acorn_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/ansi-styles/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ansi-styles_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/strip-ansi/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_strip-ansi_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/strip-ansi/node_modules/ansi-regex/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_strip-ansi_node_modules_ansi-regex_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/type-check/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_type-check_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/arrify/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_arrify_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/string-width/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_string-width_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/graceful-fs/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_graceful-fs_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/inherits/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_inherits_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/array-union/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_array-union_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/levn/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_levn_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/is-promise/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_is-promise_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/color-name/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_color-name_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/mkdirp/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_mkdirp_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/has-ansi/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_has-ansi_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/shebang-command/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_shebang-command_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/file-entry-cache/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_file-entry-cache_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/yallist/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_yallist_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/lodash/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_lodash_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/globals/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_globals_LICENSE
-cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/restore-cursor/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_restore-cursor_LICENSE
-cp src/3rdparty/chromium/third_party/libjingle_xmpp/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libjingle_xmpp_LICENSE
-cp src/3rdparty/chromium/third_party/sqlite4java/LICENSE %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_sqlite4java_LICENSE
-cp src/3rdparty/chromium/url/third_party/mozilla/LICENSE.txt %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_chromium_url_third_party_mozilla_LICENSE.txt
-cp src/3rdparty/ninja/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdparty_ninja_COPYING
+mkdir -p %{buildroot}/usr/share/package-licenses/qtwebengine
+cp LICENSE.Chromium %{buildroot}/usr/share/package-licenses/qtwebengine/LICENSE.Chromium
+cp LICENSE.GPL2 %{buildroot}/usr/share/package-licenses/qtwebengine/LICENSE.GPL2
+cp LICENSE.GPL3 %{buildroot}/usr/share/package-licenses/qtwebengine/LICENSE.GPL3
+cp LICENSE.GPL3-EXCEPT %{buildroot}/usr/share/package-licenses/qtwebengine/LICENSE.GPL3-EXCEPT
+cp LICENSE.GPLv3 %{buildroot}/usr/share/package-licenses/qtwebengine/LICENSE.GPLv3
+cp LICENSE.LGPL3 %{buildroot}/usr/share/package-licenses/qtwebengine/LICENSE.LGPL3
+cp src/3rdparty/chromium/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_LICENSE
+cp src/3rdparty/chromium/LICENSE.chromium_os %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_LICENSE.chromium_os
+cp src/3rdparty/chromium/base/third_party/dmg_fp/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_base_third_party_dmg_fp_LICENSE
+cp src/3rdparty/chromium/base/third_party/dynamic_annotations/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_base_third_party_dynamic_annotations_LICENSE
+cp src/3rdparty/chromium/base/third_party/icu/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_base_third_party_icu_LICENSE
+cp src/3rdparty/chromium/base/third_party/libevent/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_base_third_party_libevent_LICENSE
+cp src/3rdparty/chromium/base/third_party/nspr/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_base_third_party_nspr_LICENSE
+cp src/3rdparty/chromium/base/third_party/superfasthash/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_base_third_party_superfasthash_LICENSE
+cp src/3rdparty/chromium/base/third_party/symbolize/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_base_third_party_symbolize_LICENSE
+cp src/3rdparty/chromium/base/third_party/valgrind/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_base_third_party_valgrind_LICENSE
+cp src/3rdparty/chromium/base/third_party/xdg_mime/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_base_third_party_xdg_mime_LICENSE
+cp src/3rdparty/chromium/base/third_party/xdg_user_dirs/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_base_third_party_xdg_user_dirs_LICENSE
+cp src/3rdparty/chromium/buildtools/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_buildtools_LICENSE
+cp src/3rdparty/chromium/chrome/third_party/chromevox/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_chrome_third_party_chromevox_LICENSE
+cp src/3rdparty/chromium/chrome/third_party/chromevox/third_party/closure-library/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_chrome_third_party_chromevox_third_party_closure-library_LICENSE
+cp src/3rdparty/chromium/components/url_pattern_index/copying_file_stream.h %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_components_url_pattern_index_copying_file_stream.h
+cp src/3rdparty/chromium/mojo/public/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_mojo_public_LICENSE
+cp src/3rdparty/chromium/net/third_party/mozilla_security_manager/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_net_third_party_mozilla_security_manager_LICENSE
+cp src/3rdparty/chromium/net/third_party/nss/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_net_third_party_nss_LICENSE
+cp src/3rdparty/chromium/ppapi/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_ppapi_LICENSE
+cp src/3rdparty/chromium/third_party/Python-Markdown/LICENSE.md %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_Python-Markdown_LICENSE.md
+cp src/3rdparty/chromium/third_party/SPIRV-Tools/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_SPIRV-Tools_LICENSE
+cp src/3rdparty/chromium/third_party/SPIRV-Tools/src/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_SPIRV-Tools_src_LICENSE
+cp src/3rdparty/chromium/third_party/WebKit/LICENSE_FOR_ABOUT_CREDITS %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_LICENSE_FOR_ABOUT_CREDITS
+cp src/3rdparty/chromium/third_party/WebKit/Source/build/scripts/license.py %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_build_scripts_license.py
+cp src/3rdparty/chromium/third_party/WebKit/Source/core/LICENSE-APPLE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_core_LICENSE-APPLE
+cp src/3rdparty/chromium/third_party/WebKit/Source/core/LICENSE-LGPL-2 %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_core_LICENSE-LGPL-2
+cp src/3rdparty/chromium/third_party/WebKit/Source/core/LICENSE-LGPL-2.1 %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_core_LICENSE-LGPL-2.1
+cp src/3rdparty/chromium/third_party/WebKit/Source/devtools/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_LICENSE
+cp src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/audits2/lighthouse/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_audits2_lighthouse_LICENSE
+cp src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/audits2_worker/lighthouse/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_audits2_worker_lighthouse_LICENSE
+cp src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/cm/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_cm_LICENSE
+cp src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/cm/LICENSE_python %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_cm_LICENSE_python
+cp src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/cm_modes/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_cm_modes_LICENSE
+cp src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/formatter_worker/acorn/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_formatter_worker_acorn_LICENSE
+cp src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/terminal/xterm.js/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_terminal_xterm.js_LICENSE
+cp src/3rdparty/chromium/third_party/WebKit/Source/devtools/scripts/closure/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_scripts_closure_COPYING
+cp src/3rdparty/chromium/third_party/WebKit/Source/platform/wtf/dtoa/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_platform_wtf_dtoa_COPYING
+cp src/3rdparty/chromium/third_party/WebKit/Source/platform/wtf/dtoa/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_platform_wtf_dtoa_LICENSE
+cp src/3rdparty/chromium/third_party/WebKit/Tools/Scripts/webkitpy/thirdparty/mod_pywebsocket/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Tools_Scripts_webkitpy_thirdparty_mod_pywebsocket_COPYING
+cp src/3rdparty/chromium/third_party/WebKit/Tools/Scripts/webkitpy/thirdparty/wpt/wpt/LICENSE.md %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Tools_Scripts_webkitpy_thirdparty_wpt_wpt_LICENSE.md
+cp src/3rdparty/chromium/third_party/WebKit/Tools/Scripts/webkitpy/thirdparty/wpt/wpt/tools/html5lib/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Tools_Scripts_webkitpy_thirdparty_wpt_wpt_tools_html5lib_LICENSE
+cp src/3rdparty/chromium/third_party/WebKit/Tools/Scripts/webkitpy/thirdparty/wpt/wpt/tools/six/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Tools_Scripts_webkitpy_thirdparty_wpt_wpt_tools_six_LICENSE
+cp src/3rdparty/chromium/third_party/WebKit/Tools/Scripts/webkitpy/thirdparty/wpt/wpt/tools/wptserve/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Tools_Scripts_webkitpy_thirdparty_wpt_wpt_tools_wptserve_LICENSE
+cp src/3rdparty/chromium/third_party/accessibility_test_framework/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_accessibility_test_framework_LICENSE
+cp src/3rdparty/chromium/third_party/angle/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_angle_LICENSE
+cp src/3rdparty/chromium/third_party/angle/src/common/third_party/smhasher/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_angle_src_common_third_party_smhasher_LICENSE
+cp src/3rdparty/chromium/third_party/angle/src/third_party/compiler/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_angle_src_third_party_compiler_LICENSE
+cp src/3rdparty/chromium/third_party/angle/src/third_party/libXNVCtrl/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_angle_src_third_party_libXNVCtrl_LICENSE
+cp src/3rdparty/chromium/third_party/apache-portable-runtime/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_apache-portable-runtime_LICENSE
+cp src/3rdparty/chromium/third_party/apk-patch-size-estimator/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_apk-patch-size-estimator_LICENSE
+cp src/3rdparty/chromium/third_party/apple_apsl/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_apple_apsl_LICENSE
+cp src/3rdparty/chromium/third_party/axe-core/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_axe-core_LICENSE
+cp src/3rdparty/chromium/third_party/bazel/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_bazel_LICENSE
+cp src/3rdparty/chromium/third_party/blanketjs/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_blanketjs_LICENSE
+cp src/3rdparty/chromium/third_party/boringssl/src/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_boringssl_src_LICENSE
+cp src/3rdparty/chromium/third_party/boringssl/src/third_party/android-cmake/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_boringssl_src_third_party_android-cmake_LICENSE
+cp src/3rdparty/chromium/third_party/boringssl/src/third_party/fiat/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_boringssl_src_third_party_fiat_LICENSE
+cp src/3rdparty/chromium/third_party/boringssl/src/third_party/googletest/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_boringssl_src_third_party_googletest_LICENSE
+cp src/3rdparty/chromium/third_party/bouncycastle/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_bouncycastle_LICENSE
+cp src/3rdparty/chromium/third_party/breakpad/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_breakpad_LICENSE
+cp src/3rdparty/chromium/third_party/breakpad/breakpad/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_breakpad_breakpad_LICENSE
+cp src/3rdparty/chromium/third_party/breakpad/breakpad/src/third_party/curl/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_breakpad_breakpad_src_third_party_curl_COPYING
+cp src/3rdparty/chromium/third_party/breakpad/breakpad/src/third_party/libdisasm/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_breakpad_breakpad_src_third_party_libdisasm_LICENSE
+cp src/3rdparty/chromium/third_party/breakpad/breakpad/src/third_party/musl/COPYRIGHT %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_breakpad_breakpad_src_third_party_musl_COPYRIGHT
+cp src/3rdparty/chromium/third_party/brotli/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_brotli_LICENSE
+cp src/3rdparty/chromium/third_party/bspatch/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_bspatch_LICENSE
+cp src/3rdparty/chromium/third_party/byte_buddy/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_byte_buddy_LICENSE
+cp src/3rdparty/chromium/third_party/ced/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ced_LICENSE
+cp src/3rdparty/chromium/third_party/ced/src/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ced_src_LICENSE
+cp src/3rdparty/chromium/third_party/chaijs/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_chaijs_LICENSE
+cp src/3rdparty/chromium/third_party/checkstyle/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_checkstyle_LICENSE
+cp src/3rdparty/chromium/third_party/checkstyle/LICENSE.apache20 %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_checkstyle_LICENSE.apache20
+cp src/3rdparty/chromium/third_party/cld_3/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_cld_3_LICENSE
+cp src/3rdparty/chromium/third_party/cld_3/src/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_cld_3_src_LICENSE
+cp src/3rdparty/chromium/third_party/content_shell_fonts/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_content_shell_fonts_LICENSE
+cp src/3rdparty/chromium/third_party/crashpad/crashpad/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_crashpad_crashpad_LICENSE
+cp src/3rdparty/chromium/third_party/crashpad/crashpad/third_party/apple_cf/APPLE_LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_crashpad_crashpad_third_party_apple_cf_APPLE_LICENSE
+cp src/3rdparty/chromium/third_party/crc32c/src/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_crc32c_src_LICENSE
+cp src/3rdparty/chromium/third_party/cros_system_api/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_cros_system_api_LICENSE
+cp src/3rdparty/chromium/third_party/custom_tabs_client/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_custom_tabs_client_LICENSE
+cp src/3rdparty/chromium/third_party/d3/src/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_d3_src_LICENSE
+cp src/3rdparty/chromium/third_party/decklink/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_decklink_LICENSE
+cp src/3rdparty/chromium/third_party/devscripts/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devscripts_COPYING
+cp src/3rdparty/chromium/third_party/devtools-node-modules/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/acorn-jsx/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_acorn-jsx_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/acorn-jsx/node_modules/acorn/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_acorn-jsx_node_modules_acorn_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/acorn/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_acorn_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/ajv-keywords/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ajv-keywords_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/ajv/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ajv_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/ansi-escapes/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ansi-escapes_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/ansi-regex/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ansi-regex_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/ansi-styles/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ansi-styles_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/argparse/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_argparse_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/array-union/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_array-union_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/array-uniq/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_array-uniq_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/arrify/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_arrify_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/babel-code-frame/node_modules/chalk/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_babel-code-frame_node_modules_chalk_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/babel-code-frame/node_modules/strip-ansi/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_babel-code-frame_node_modules_strip-ansi_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/balanced-match/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_balanced-match_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/chalk/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_chalk_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/chalk/node_modules/ansi-styles/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_chalk_node_modules_ansi-styles_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/chalk/node_modules/supports-color/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_chalk_node_modules_supports-color_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/chardet/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_chardet_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/circular-json/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_circular-json_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/cli-cursor/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_cli-cursor_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/cli-width/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_cli-width_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/co/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_co_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/color-convert/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_color-convert_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/color-name/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_color-name_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/concat-map/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_concat-map_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/concat-stream/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_concat-stream_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/core-util-is/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_core-util-is_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/cross-spawn/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_cross-spawn_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/debug/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_debug_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/deep-is/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_deep-is_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/del/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_del_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/doctrine/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_doctrine_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/doctrine/LICENSE.esprima %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_doctrine_LICENSE.esprima
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/escape-string-regexp/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_escape-string-regexp_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/eslint-scope/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_eslint-scope_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/eslint/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_eslint_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/espree/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_espree_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/esprima/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_esprima_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/esquery/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_esquery_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/estraverse/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_estraverse_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/esutils/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_esutils_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/external-editor/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_external-editor_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/fast-deep-equal/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_fast-deep-equal_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/fast-json-stable-stringify/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_fast-json-stable-stringify_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/fast-levenshtein/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_fast-levenshtein_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/figures/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_figures_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/file-entry-cache/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_file-entry-cache_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/flat-cache/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_flat-cache_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/fs.realpath/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_fs.realpath_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/functional-red-black-tree/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_functional-red-black-tree_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/glob/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_glob_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/globals/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_globals_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/globby/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_globby_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/graceful-fs/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_graceful-fs_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/has-ansi/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_has-ansi_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/has-flag/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_has-flag_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/iconv-lite/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_iconv-lite_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/inflight/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_inflight_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/inherits/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_inherits_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/is-fullwidth-code-point/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_is-fullwidth-code-point_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/is-path-inside/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_is-path-inside_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/is-promise/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_is-promise_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/is-resolvable/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_is-resolvable_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/isexe/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_isexe_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/js-tokens/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_js-tokens_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/js-yaml/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_js-yaml_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/json-schema-traverse/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_json-schema-traverse_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/json-stable-stringify-without-jsonify/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_json-stable-stringify-without-jsonify_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/levn/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_levn_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/lodash/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_lodash_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/lru-cache/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_lru-cache_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/mimic-fn/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_mimic-fn_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/minimatch/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_minimatch_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/minimist/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_minimist_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/mkdirp/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_mkdirp_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/ms/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ms_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/mute-stream/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_mute-stream_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/object-assign/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_object-assign_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/once/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_once_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/onetime/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_onetime_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/optionator/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_optionator_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/os-tmpdir/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_os-tmpdir_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/path-is-absolute/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_path-is-absolute_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/path-is-inside/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_path-is-inside_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/pify/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_pify_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/pinkie-promise/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_pinkie-promise_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/pinkie/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_pinkie_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/pluralize/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_pluralize_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/prelude-ls/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_prelude-ls_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/process-nextick-args/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_process-nextick-args_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/progress/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_progress_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/pseudomap/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_pseudomap_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/readable-stream/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_readable-stream_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/require-uncached/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_require-uncached_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/resolve-from/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_resolve-from_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/restore-cursor/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_restore-cursor_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/rimraf/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_rimraf_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/run-async/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_run-async_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/safe-buffer/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_safe-buffer_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/semver/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_semver_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/shebang-command/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_shebang-command_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/shebang-regex/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_shebang-regex_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/signal-exit/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_signal-exit_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/slice-ansi/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_slice-ansi_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/sprintf-js/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_sprintf-js_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/string-width/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_string-width_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/string_decoder/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_string_decoder_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/strip-ansi/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_strip-ansi_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/strip-ansi/node_modules/ansi-regex/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_strip-ansi_node_modules_ansi-regex_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/strip-json-comments/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_strip-json-comments_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/supports-color/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_supports-color_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/table/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_table_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/text-table/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_text-table_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/through/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_through_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/through/LICENSE.MIT %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_through_LICENSE.MIT
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/tmp/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_tmp_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/type-check/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_type-check_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/typedarray/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_typedarray_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/util-deprecate/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_util-deprecate_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/which/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_which_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/wordwrap/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_wordwrap_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/wrappy/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_wrappy_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/write/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_write_LICENSE
+cp src/3rdparty/chromium/third_party/devtools-node-modules/third_party/node_modules/yallist/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_yallist_LICENSE
+cp src/3rdparty/chromium/third_party/dom_distiller_js/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_dom_distiller_js_LICENSE
+cp src/3rdparty/chromium/third_party/errorprone/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_errorprone_LICENSE
+cp src/3rdparty/chromium/third_party/espresso/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_espresso_LICENSE
+cp src/3rdparty/chromium/third_party/expat/files/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_expat_files_COPYING
+cp src/3rdparty/chromium/third_party/ffmpeg/COPYING.GPLv2 %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ffmpeg_COPYING.GPLv2
+cp src/3rdparty/chromium/third_party/ffmpeg/COPYING.GPLv3 %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ffmpeg_COPYING.GPLv3
+cp src/3rdparty/chromium/third_party/ffmpeg/COPYING.LGPLv2.1 %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ffmpeg_COPYING.LGPLv2.1
+cp src/3rdparty/chromium/third_party/ffmpeg/COPYING.LGPLv3 %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ffmpeg_COPYING.LGPLv3
+cp src/3rdparty/chromium/third_party/fips181/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_fips181_COPYING
+cp src/3rdparty/chromium/third_party/flac/COPYING.FDL %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_flac_COPYING.FDL
+cp src/3rdparty/chromium/third_party/flac/COPYING.GPL %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_flac_COPYING.GPL
+cp src/3rdparty/chromium/third_party/flac/COPYING.LGPL %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_flac_COPYING.LGPL
+cp src/3rdparty/chromium/third_party/flac/COPYING.Xiph %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_flac_COPYING.Xiph
+cp src/3rdparty/chromium/third_party/flatbuffers/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_flatbuffers_LICENSE
+cp src/3rdparty/chromium/third_party/flatbuffers/src/LICENSE.txt %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_flatbuffers_src_LICENSE.txt
+cp src/3rdparty/chromium/third_party/flot/LICENSE.txt %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_flot_LICENSE.txt
+cp src/3rdparty/chromium/third_party/fontconfig/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_fontconfig_LICENSE
+cp src/3rdparty/chromium/third_party/fontconfig/src/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_fontconfig_src_COPYING
+cp src/3rdparty/chromium/third_party/freetype/src/docs/GPLv2.TXT %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_freetype_src_docs_GPLv2.TXT
+cp src/3rdparty/chromium/third_party/freetype/src/docs/LICENSE.TXT %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_freetype_src_docs_LICENSE.TXT
+cp src/3rdparty/chromium/third_party/gestures/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_gestures_LICENSE
+cp src/3rdparty/chromium/third_party/gestures/gestures/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_gestures_gestures_LICENSE
+cp src/3rdparty/chromium/third_party/gif_player/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_gif_player_LICENSE
+cp src/3rdparty/chromium/third_party/glslang/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_glslang_LICENSE
+cp src/3rdparty/chromium/third_party/googletest/src/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_googletest_src_LICENSE
+cp src/3rdparty/chromium/third_party/googletest/src/googlemock/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_googletest_src_googlemock_LICENSE
+cp src/3rdparty/chromium/third_party/googletest/src/googlemock/scripts/generator/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_googletest_src_googlemock_scripts_generator_LICENSE
+cp src/3rdparty/chromium/third_party/googletest/src/googletest/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_googletest_src_googletest_LICENSE
+cp src/3rdparty/chromium/third_party/gson/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_gson_LICENSE
+cp src/3rdparty/chromium/third_party/guava/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_guava_LICENSE
+cp src/3rdparty/chromium/third_party/gvr-android-keyboard/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_gvr-android-keyboard_LICENSE
+cp src/3rdparty/chromium/third_party/gvr-android-sdk/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_gvr-android-sdk_LICENSE
+cp src/3rdparty/chromium/third_party/haha/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_haha_LICENSE
+cp src/3rdparty/chromium/third_party/hamcrest/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_hamcrest_LICENSE
+cp src/3rdparty/chromium/third_party/harfbuzz-ng/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_harfbuzz-ng_COPYING
+cp src/3rdparty/chromium/third_party/hunspell/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_hunspell_COPYING
+cp src/3rdparty/chromium/third_party/hunspell/COPYING.LESSER %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_hunspell_COPYING.LESSER
+cp src/3rdparty/chromium/third_party/hunspell/COPYING.MPL %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_hunspell_COPYING.MPL
+cp src/3rdparty/chromium/third_party/iaccessible2/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_iaccessible2_LICENSE
+cp src/3rdparty/chromium/third_party/iccjpeg/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_iccjpeg_LICENSE
+cp src/3rdparty/chromium/third_party/icu/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_icu_LICENSE
+cp src/3rdparty/chromium/third_party/icu/license.html %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_icu_license.html
+cp src/3rdparty/chromium/third_party/icu/scripts/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_icu_scripts_LICENSE
+cp src/3rdparty/chromium/third_party/icu4j/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_icu4j_LICENSE
+cp src/3rdparty/chromium/third_party/ijar/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ijar_LICENSE
+cp src/3rdparty/chromium/third_party/inspector_protocol/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_inspector_protocol_LICENSE
+cp src/3rdparty/chromium/third_party/intellij/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_intellij_LICENSE
+cp src/3rdparty/chromium/third_party/isimpledom/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_isimpledom_LICENSE
+cp src/3rdparty/chromium/third_party/javax_inject/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_javax_inject_LICENSE
+cp src/3rdparty/chromium/third_party/jinja2/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_jinja2_LICENSE
+cp src/3rdparty/chromium/third_party/jmake/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_jmake_LICENSE
+cp src/3rdparty/chromium/third_party/jsoncpp/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_jsoncpp_LICENSE
+cp src/3rdparty/chromium/third_party/jstemplate/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_jstemplate_COPYING
+cp src/3rdparty/chromium/third_party/khronos/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_khronos_LICENSE
+cp src/3rdparty/chromium/third_party/leakcanary/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_leakcanary_LICENSE
+cp src/3rdparty/chromium/third_party/leveldatabase/src/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_leveldatabase_src_LICENSE
+cp src/3rdparty/chromium/third_party/libFuzzer/LICENSE.TXT %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libFuzzer_LICENSE.TXT
+cp src/3rdparty/chromium/third_party/libXNVCtrl/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libXNVCtrl_LICENSE
+cp src/3rdparty/chromium/third_party/libaddressinput/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libaddressinput_LICENSE
+cp src/3rdparty/chromium/third_party/libaddressinput/src/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libaddressinput_src_LICENSE
+cp src/3rdparty/chromium/third_party/libaddressinput/src/cpp/LICENSE.chromium %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libaddressinput_src_cpp_LICENSE.chromium
+cp src/3rdparty/chromium/third_party/libevdev/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libevdev_LICENSE
+cp src/3rdparty/chromium/third_party/libjingle_xmpp/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libjingle_xmpp_LICENSE
+cp src/3rdparty/chromium/third_party/libjpeg/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libjpeg_LICENSE
+cp src/3rdparty/chromium/third_party/libjpeg_turbo/LICENSE.md %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libjpeg_turbo_LICENSE.md
+cp src/3rdparty/chromium/third_party/libpng/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libpng_LICENSE
+cp src/3rdparty/chromium/third_party/libprotobuf-mutator/src/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libprotobuf-mutator_src_LICENSE
+cp src/3rdparty/chromium/third_party/libsecret/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libsecret_LICENSE
+cp src/3rdparty/chromium/third_party/libsrtp/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libsrtp_LICENSE
+cp src/3rdparty/chromium/third_party/libsync/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libsync_LICENSE
+cp src/3rdparty/chromium/third_party/libudev/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libudev_LICENSE
+cp src/3rdparty/chromium/third_party/libusb/src/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libusb_src_COPYING
+cp src/3rdparty/chromium/third_party/libvpx/source/libvpx/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libvpx_source_libvpx_LICENSE
+cp src/3rdparty/chromium/third_party/libvpx/source/libvpx/third_party/googletest/src/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libvpx_source_libvpx_third_party_googletest_src_LICENSE
+cp src/3rdparty/chromium/third_party/libvpx/source/libvpx/third_party/libwebm/LICENSE.TXT %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libvpx_source_libvpx_third_party_libwebm_LICENSE.TXT
+cp src/3rdparty/chromium/third_party/libvpx/source/libvpx/third_party/x86inc/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libvpx_source_libvpx_third_party_x86inc_LICENSE
+cp src/3rdparty/chromium/third_party/libwebm/source/LICENSE.TXT %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libwebm_source_LICENSE.TXT
+cp src/3rdparty/chromium/third_party/libwebp/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libwebp_LICENSE
+cp src/3rdparty/chromium/third_party/libxml/src/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libxml_src_COPYING
+cp src/3rdparty/chromium/third_party/libxml/src/Copyright %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libxml_src_Copyright
+cp src/3rdparty/chromium/third_party/libxslt/linux/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libxslt_linux_COPYING
+cp src/3rdparty/chromium/third_party/libxslt/src/Copyright %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libxslt_src_Copyright
+cp src/3rdparty/chromium/third_party/libyuv/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libyuv_LICENSE
+cp src/3rdparty/chromium/third_party/mach_override/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_mach_override_LICENSE
+cp src/3rdparty/chromium/third_party/markupsafe/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_markupsafe_LICENSE
+cp src/3rdparty/chromium/third_party/material_design_icons/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_material_design_icons_LICENSE
+cp src/3rdparty/chromium/third_party/mesa/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_mesa_LICENSE
+cp src/3rdparty/chromium/third_party/mesa/src/docs/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_mesa_src_docs_COPYING
+cp src/3rdparty/chromium/third_party/mesa/src/docs/license.html %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_mesa_src_docs_license.html
+cp src/3rdparty/chromium/third_party/mesa/src/src/gallium/drivers/radeon/LICENSE.TXT %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_mesa_src_src_gallium_drivers_radeon_LICENSE.TXT
+cp src/3rdparty/chromium/third_party/mesa/src/src/mapi/glapi/gen/license.py %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_mesa_src_src_mapi_glapi_gen_license.py
+cp src/3rdparty/chromium/third_party/metrics_proto/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_metrics_proto_LICENSE
+cp src/3rdparty/chromium/third_party/minigbm/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_minigbm_LICENSE
+cp src/3rdparty/chromium/third_party/minigbm/src/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_minigbm_src_LICENSE
+cp src/3rdparty/chromium/third_party/minizip/src/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_minizip_src_LICENSE
+cp src/3rdparty/chromium/third_party/mocha/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_mocha_LICENSE
+cp src/3rdparty/chromium/third_party/mockito/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_mockito_LICENSE
+cp src/3rdparty/chromium/third_party/modp_b64/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_modp_b64_LICENSE
+cp src/3rdparty/chromium/third_party/molokocacao/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_molokocacao_LICENSE
+cp src/3rdparty/chromium/third_party/motemplate/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_motemplate_LICENSE
+cp src/3rdparty/chromium/third_party/mozilla/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_mozilla_LICENSE
+cp src/3rdparty/chromium/third_party/mt19937ar/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_mt19937ar_LICENSE
+cp src/3rdparty/chromium/third_party/netty-tcnative/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_netty-tcnative_LICENSE
+cp src/3rdparty/chromium/third_party/netty4/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_netty4_LICENSE
+cp src/3rdparty/chromium/third_party/node/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_node_LICENSE
+cp src/3rdparty/chromium/third_party/objenesis/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_objenesis_LICENSE
+cp src/3rdparty/chromium/third_party/ocmock/License.txt %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ocmock_License.txt
+cp src/3rdparty/chromium/third_party/openvr/src/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_openvr_src_LICENSE
+cp src/3rdparty/chromium/third_party/opus/src/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_opus_src_COPYING
+cp src/3rdparty/chromium/third_party/ots/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ots_LICENSE
+cp src/3rdparty/chromium/third_party/ow2_asm/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ow2_asm_LICENSE
+cp src/3rdparty/chromium/third_party/pdfium/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_pdfium_LICENSE
+cp src/3rdparty/chromium/third_party/pdfium/third_party/pymock/LICENSE.txt %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_pdfium_third_party_pymock_LICENSE.txt
+cp src/3rdparty/chromium/third_party/perfetto/NOTICE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_perfetto_NOTICE
+cp src/3rdparty/chromium/third_party/pexpect/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_pexpect_LICENSE
+cp src/3rdparty/chromium/third_party/ply/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ply_LICENSE
+cp src/3rdparty/chromium/third_party/ply/license.patch %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ply_license.patch
+cp src/3rdparty/chromium/third_party/polymer/v1_0/components-chromium/polymer/LICENSE.txt %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_polymer_v1_0_components-chromium_polymer_LICENSE.txt
+cp src/3rdparty/chromium/third_party/proguard/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_proguard_LICENSE
+cp src/3rdparty/chromium/third_party/protobuf/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_protobuf_LICENSE
+cp src/3rdparty/chromium/third_party/pycoverage/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_pycoverage_LICENSE
+cp src/3rdparty/chromium/third_party/pyelftools/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_pyelftools_LICENSE
+cp src/3rdparty/chromium/third_party/pyelftools/elftools/construct/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_pyelftools_elftools_construct_LICENSE
+cp src/3rdparty/chromium/third_party/pyftpdlib/src/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_pyftpdlib_src_LICENSE
+cp src/3rdparty/chromium/third_party/pymock/LICENSE.txt %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_pymock_LICENSE.txt
+cp src/3rdparty/chromium/third_party/pystache/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_pystache_LICENSE
+cp src/3rdparty/chromium/third_party/pywebsocket/src/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_pywebsocket_src_LICENSE
+cp src/3rdparty/chromium/third_party/qcms/src/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_qcms_src_COPYING
+cp src/3rdparty/chromium/third_party/qunit/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_qunit_LICENSE
+cp src/3rdparty/chromium/third_party/re2/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_re2_LICENSE
+cp src/3rdparty/chromium/third_party/re2/src/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_re2_src_LICENSE
+cp src/3rdparty/chromium/third_party/requests/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_requests_LICENSE
+cp src/3rdparty/chromium/third_party/robolectric/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_robolectric_LICENSE
+cp src/3rdparty/chromium/third_party/s2cellid/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_s2cellid_LICENSE
+cp src/3rdparty/chromium/third_party/sfntly/COPYING.txt %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_sfntly_COPYING.txt
+cp src/3rdparty/chromium/third_party/sfntly/src/cpp/COPYING.txt %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_sfntly_src_cpp_COPYING.txt
+cp src/3rdparty/chromium/third_party/shaderc/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_shaderc_LICENSE
+cp src/3rdparty/chromium/third_party/shaderc/src/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_shaderc_src_LICENSE
+cp src/3rdparty/chromium/third_party/shaderc/src/third_party/LICENSE.glslang %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_shaderc_src_third_party_LICENSE.glslang
+cp src/3rdparty/chromium/third_party/shaderc/src/third_party/LICENSE.spirv-tools %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_shaderc_src_third_party_LICENSE.spirv-tools
+cp src/3rdparty/chromium/third_party/simplejson/LICENSE.txt %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_simplejson_LICENSE.txt
+cp src/3rdparty/chromium/third_party/sinonjs/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_sinonjs_LICENSE
+cp src/3rdparty/chromium/third_party/skia/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_skia_LICENSE
+cp src/3rdparty/chromium/third_party/skia/third_party/etc1/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_skia_third_party_etc1_LICENSE
+cp src/3rdparty/chromium/third_party/skia/third_party/gif/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_skia_third_party_gif_LICENSE
+cp src/3rdparty/chromium/third_party/smhasher/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_smhasher_LICENSE
+cp src/3rdparty/chromium/third_party/snappy/src/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_snappy_src_COPYING
+cp src/3rdparty/chromium/third_party/sqlite4java/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_sqlite4java_LICENSE
+cp src/3rdparty/chromium/third_party/sudden_motion_sensor/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_sudden_motion_sensor_LICENSE
+cp src/3rdparty/chromium/third_party/swiftshader/LICENSE.txt %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_LICENSE.txt
+cp src/3rdparty/chromium/third_party/swiftshader/third_party/LLVM/LICENSE.TXT %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_LLVM_LICENSE.TXT
+cp src/3rdparty/chromium/third_party/swiftshader/third_party/LLVM/autoconf/LICENSE.TXT %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_LLVM_autoconf_LICENSE.TXT
+cp src/3rdparty/chromium/third_party/swiftshader/third_party/LLVM/projects/sample/autoconf/LICENSE.TXT %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_LLVM_projects_sample_autoconf_LICENSE.TXT
+cp src/3rdparty/chromium/third_party/swiftshader/third_party/LLVM/utils/unittest/googletest/LICENSE.TXT %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_LLVM_utils_unittest_googletest_LICENSE.TXT
+cp src/3rdparty/chromium/third_party/swiftshader/third_party/llvm-subzero/LICENSE.TXT %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_llvm-subzero_LICENSE.TXT
+cp src/3rdparty/chromium/third_party/swiftshader/third_party/subzero/LICENSE.TXT %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_subzero_LICENSE.TXT
+cp src/3rdparty/chromium/third_party/tcmalloc/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_tcmalloc_LICENSE
+cp src/3rdparty/chromium/third_party/tcmalloc/vendor/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_tcmalloc_vendor_COPYING
+cp src/3rdparty/chromium/third_party/tcmalloc/vendor/packages/deb/copyright %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_tcmalloc_vendor_packages_deb_copyright
+cp src/3rdparty/chromium/third_party/tlslite/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_tlslite_LICENSE
+cp src/3rdparty/chromium/third_party/typ/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_typ_LICENSE
+cp src/3rdparty/chromium/third_party/ub-uiautomator/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ub-uiautomator_LICENSE
+cp src/3rdparty/chromium/third_party/usb_ids/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_usb_ids_LICENSE
+cp src/3rdparty/chromium/third_party/usrsctp/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_usrsctp_LICENSE
+cp src/3rdparty/chromium/third_party/usrsctp/usrsctplib/LICENSE.md %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_usrsctp_usrsctplib_LICENSE.md
+cp src/3rdparty/chromium/third_party/v4l-utils/COPYING.libv4l %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_v4l-utils_COPYING.libv4l
+cp src/3rdparty/chromium/third_party/visualmetrics/src/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_visualmetrics_src_LICENSE
+cp src/3rdparty/chromium/third_party/vulkan/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_vulkan_LICENSE
+cp src/3rdparty/chromium/third_party/wayland-protocols/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_wayland-protocols_LICENSE
+cp src/3rdparty/chromium/third_party/wayland-protocols/src/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_wayland-protocols_src_COPYING
+cp src/3rdparty/chromium/third_party/wayland/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_wayland_LICENSE
+cp src/3rdparty/chromium/third_party/wds/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_wds_LICENSE
+cp src/3rdparty/chromium/third_party/wds/src/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_wds_src_COPYING
+cp src/3rdparty/chromium/third_party/web-animations-js/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_web-animations-js_LICENSE
+cp src/3rdparty/chromium/third_party/web-animations-js/sources/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_web-animations-js_sources_COPYING
+cp src/3rdparty/chromium/third_party/webdriver/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_webdriver_COPYING
+cp src/3rdparty/chromium/third_party/webdriver/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_webdriver_LICENSE
+cp src/3rdparty/chromium/third_party/webrtc/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_webrtc_LICENSE
+cp src/3rdparty/chromium/third_party/webrtc/LICENSE_THIRD_PARTY %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_webrtc_LICENSE_THIRD_PARTY
+cp src/3rdparty/chromium/third_party/webrtc/examples/androidapp/third_party/autobanh/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_webrtc_examples_androidapp_third_party_autobanh_LICENSE
+cp src/3rdparty/chromium/third_party/webrtc/examples/androidapp/third_party/autobanh/LICENSE.md %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_webrtc_examples_androidapp_third_party_autobanh_LICENSE.md
+cp src/3rdparty/chromium/third_party/webrtc/examples/androidapp/third_party/autobanh/NOTICE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_webrtc_examples_androidapp_third_party_autobanh_NOTICE
+cp src/3rdparty/chromium/third_party/webrtc/examples/objc/AppRTCMobile/third_party/SocketRocket/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_webrtc_examples_objc_AppRTCMobile_third_party_SocketRocket_LICENSE
+cp src/3rdparty/chromium/third_party/webrtc/license_template.txt %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_webrtc_license_template.txt
+cp src/3rdparty/chromium/third_party/woff2/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_woff2_LICENSE
+cp src/3rdparty/chromium/third_party/xdg-utils/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_xdg-utils_LICENSE
+cp src/3rdparty/chromium/third_party/xstream/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_xstream_LICENSE
+cp src/3rdparty/chromium/third_party/yara/src/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_yara_src_COPYING
+cp src/3rdparty/chromium/third_party/yasm/source/patched-yasm/Artistic.txt %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_yasm_source_patched-yasm_Artistic.txt
+cp src/3rdparty/chromium/third_party/yasm/source/patched-yasm/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_yasm_source_patched-yasm_COPYING
+cp src/3rdparty/chromium/third_party/zlib/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_zlib_LICENSE
+cp src/3rdparty/chromium/tools/gyp/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_tools_gyp_LICENSE
+cp src/3rdparty/chromium/tools/symsrc/COPYING-pefile %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_tools_symsrc_COPYING-pefile
+cp src/3rdparty/chromium/tools/win/ChromeDebug/ChromeDebug/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_tools_win_ChromeDebug_ChromeDebug_LICENSE
+cp src/3rdparty/chromium/url/third_party/mozilla/LICENSE.txt %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_url_third_party_mozilla_LICENSE.txt
+cp src/3rdparty/chromium/v8/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_v8_LICENSE
+cp src/3rdparty/chromium/v8/LICENSE.fdlibm %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_v8_LICENSE.fdlibm
+cp src/3rdparty/chromium/v8/LICENSE.strongtalk %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_v8_LICENSE.strongtalk
+cp src/3rdparty/chromium/v8/LICENSE.v8 %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_v8_LICENSE.v8
+cp src/3rdparty/chromium/v8/LICENSE.valgrind %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_v8_LICENSE.valgrind
+cp src/3rdparty/chromium/v8/src/third_party/utf8-decoder/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_v8_src_third_party_utf8-decoder_LICENSE
+cp src/3rdparty/chromium/v8/src/third_party/valgrind/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_v8_src_third_party_valgrind_LICENSE
+cp src/3rdparty/chromium/v8/src/third_party/vtune/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_v8_src_third_party_vtune_LICENSE
+cp src/3rdparty/chromium/v8/third_party/colorama/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_v8_third_party_colorama_LICENSE
+cp src/3rdparty/chromium/v8/third_party/inspector_protocol/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_v8_third_party_inspector_protocol_LICENSE
+cp src/3rdparty/ninja/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/src_3rdparty_ninja_COPYING
 %make_install
 
 %files
 %defattr(-,root,root,-)
 
+%files abi
+%defattr(-,root,root,-)
+/usr/share/abi/libQt5WebEngine.so.5.11.1.abi
+/usr/share/abi/libQt5WebEngine.so.5.11.abi
+/usr/share/abi/libQt5WebEngine.so.5.abi
+/usr/share/abi/libQt5WebEngineCore.so.5.11.1.abi
+/usr/share/abi/libQt5WebEngineCore.so.5.11.abi
+/usr/share/abi/libQt5WebEngineCore.so.5.abi
+/usr/share/abi/libQt5WebEngineWidgets.so.5.11.1.abi
+/usr/share/abi/libQt5WebEngineWidgets.so.5.11.abi
+/usr/share/abi/libQt5WebEngineWidgets.so.5.abi
+
 %files bin
 %defattr(-,root,root,-)
 /usr/bin/qwebengine_convert_dict
-/usr/libexec/QtWebEngineProcess
 
 %files data
 %defattr(-,root,root,-)
@@ -806,10 +828,6 @@ cp src/3rdparty/ninja/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdpart
 /usr/lib64/qt5/mkspecs/modules/qt_lib_webenginewidgets.pri
 /usr/lib64/qt5/mkspecs/modules/qt_lib_webenginewidgets_private.pri
 
-%files doc
-%defattr(0644,root,root,0755)
-%doc /usr/share/doc/qtwebengine/*
-
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libQt5WebEngine.so.5
@@ -848,419 +866,431 @@ cp src/3rdparty/ninja/COPYING %{buildroot}/usr/share/doc/qtwebengine/src_3rdpart
 /usr/lib64/qt5/qml/QtWebEngine/plugins.qmltypes
 /usr/lib64/qt5/qml/QtWebEngine/qmldir
 
-%files license
+%files libexec
 %defattr(-,root,root,-)
-/usr/share/doc/qtwebengine/LICENSE.Chromium
-/usr/share/doc/qtwebengine/LICENSE.GPL2
-/usr/share/doc/qtwebengine/LICENSE.GPL3
-/usr/share/doc/qtwebengine/LICENSE.GPL3-EXCEPT
-/usr/share/doc/qtwebengine/LICENSE.GPLv3
-/usr/share/doc/qtwebengine/LICENSE.LGPL3
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_LICENSE.chromium_os
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_base_third_party_dmg_fp_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_base_third_party_dynamic_annotations_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_base_third_party_icu_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_base_third_party_libevent_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_base_third_party_nspr_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_base_third_party_superfasthash_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_base_third_party_symbolize_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_base_third_party_valgrind_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_base_third_party_xdg_mime_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_base_third_party_xdg_user_dirs_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_buildtools_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_chrome_third_party_chromevox_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_chrome_third_party_chromevox_third_party_closure-library_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_mojo_public_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_net_third_party_mozilla_security_manager_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_net_third_party_nss_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_ppapi_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_Python-Markdown_LICENSE.md
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_SPIRV-Tools_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_SPIRV-Tools_src_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_LICENSE_FOR_ABOUT_CREDITS
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_build_scripts_license.py
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_core_LICENSE-APPLE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_core_LICENSE-LGPL-2
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_core_LICENSE-LGPL-2.1
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_audits2_lighthouse_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_audits2_worker_lighthouse_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_cm_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_cm_LICENSE_python
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_cm_modes_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_formatter_worker_acorn_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_terminal_xterm.js_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_scripts_closure_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_platform_wtf_dtoa_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_platform_wtf_dtoa_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Tools_Scripts_webkitpy_thirdparty_mod_pywebsocket_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Tools_Scripts_webkitpy_thirdparty_wpt_wpt_LICENSE.md
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Tools_Scripts_webkitpy_thirdparty_wpt_wpt_tools_html5lib_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Tools_Scripts_webkitpy_thirdparty_wpt_wpt_tools_six_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Tools_Scripts_webkitpy_thirdparty_wpt_wpt_tools_wptserve_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_accessibility_test_framework_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_angle_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_angle_src_common_third_party_smhasher_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_angle_src_third_party_compiler_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_angle_src_third_party_libXNVCtrl_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_apache-portable-runtime_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_apk-patch-size-estimator_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_apple_apsl_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_axe-core_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_bazel_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_blanketjs_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_boringssl_src_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_boringssl_src_third_party_android-cmake_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_boringssl_src_third_party_fiat_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_boringssl_src_third_party_googletest_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_bouncycastle_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_breakpad_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_breakpad_breakpad_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_breakpad_breakpad_src_third_party_curl_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_breakpad_breakpad_src_third_party_libdisasm_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_breakpad_breakpad_src_third_party_musl_COPYRIGHT
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_brotli_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_bspatch_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_byte_buddy_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ced_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ced_src_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_chaijs_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_checkstyle_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_checkstyle_LICENSE.apache20
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_cld_3_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_cld_3_src_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_content_shell_fonts_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_crashpad_crashpad_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_crashpad_crashpad_third_party_apple_cf_APPLE_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_crc32c_src_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_cros_system_api_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_custom_tabs_client_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_d3_src_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_decklink_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devscripts_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_acorn-jsx_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_acorn-jsx_node_modules_acorn_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_acorn_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ajv-keywords_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ajv_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ansi-escapes_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ansi-regex_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ansi-styles_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_argparse_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_array-union_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_array-uniq_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_arrify_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_babel-code-frame_node_modules_chalk_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_babel-code-frame_node_modules_strip-ansi_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_balanced-match_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_chalk_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_chalk_node_modules_ansi-styles_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_chalk_node_modules_supports-color_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_chardet_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_circular-json_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_cli-cursor_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_cli-width_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_co_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_color-convert_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_color-name_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_concat-map_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_concat-stream_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_core-util-is_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_cross-spawn_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_debug_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_deep-is_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_del_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_doctrine_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_doctrine_LICENSE.esprima
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_escape-string-regexp_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_eslint-scope_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_eslint_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_espree_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_esprima_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_esquery_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_estraverse_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_esutils_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_external-editor_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_fast-deep-equal_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_fast-json-stable-stringify_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_fast-levenshtein_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_figures_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_file-entry-cache_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_flat-cache_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_fs.realpath_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_functional-red-black-tree_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_glob_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_globals_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_globby_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_graceful-fs_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_has-ansi_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_has-flag_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_iconv-lite_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_inflight_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_inherits_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_is-fullwidth-code-point_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_is-path-inside_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_is-promise_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_is-resolvable_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_isexe_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_js-tokens_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_js-yaml_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_json-schema-traverse_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_json-stable-stringify-without-jsonify_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_levn_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_lodash_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_lru-cache_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_mimic-fn_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_minimatch_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_minimist_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_mkdirp_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ms_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_mute-stream_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_object-assign_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_once_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_onetime_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_optionator_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_os-tmpdir_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_path-is-absolute_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_path-is-inside_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_pify_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_pinkie-promise_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_pinkie_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_pluralize_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_prelude-ls_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_process-nextick-args_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_progress_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_pseudomap_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_readable-stream_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_require-uncached_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_resolve-from_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_restore-cursor_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_rimraf_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_run-async_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_safe-buffer_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_semver_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_shebang-command_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_shebang-regex_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_signal-exit_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_slice-ansi_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_sprintf-js_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_string-width_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_string_decoder_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_strip-ansi_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_strip-ansi_node_modules_ansi-regex_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_strip-json-comments_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_supports-color_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_table_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_text-table_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_through_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_through_LICENSE.MIT
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_tmp_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_type-check_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_typedarray_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_util-deprecate_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_which_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_wordwrap_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_wrappy_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_write_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_yallist_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_dom_distiller_js_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_errorprone_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_espresso_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_expat_files_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ffmpeg_COPYING.GPLv2
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ffmpeg_COPYING.GPLv3
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ffmpeg_COPYING.LGPLv2.1
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ffmpeg_COPYING.LGPLv3
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_fips181_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_flac_COPYING.FDL
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_flac_COPYING.GPL
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_flac_COPYING.LGPL
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_flac_COPYING.Xiph
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_flatbuffers_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_flatbuffers_src_LICENSE.txt
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_flot_LICENSE.txt
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_fontconfig_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_fontconfig_src_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_freetype_src_docs_GPLv2.TXT
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_freetype_src_docs_LICENSE.TXT
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_gestures_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_gestures_gestures_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_gif_player_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_glslang_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_googletest_src_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_googletest_src_googlemock_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_googletest_src_googlemock_scripts_generator_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_googletest_src_googletest_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_gson_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_guava_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_gvr-android-keyboard_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_gvr-android-sdk_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_haha_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_hamcrest_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_harfbuzz-ng_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_hunspell_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_hunspell_COPYING.LESSER
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_hunspell_COPYING.MPL
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_iaccessible2_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_iccjpeg_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_icu4j_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_icu_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_icu_license.html
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_icu_scripts_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ijar_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_inspector_protocol_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_intellij_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_isimpledom_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_javax_inject_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_jinja2_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_jmake_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_jsoncpp_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_jstemplate_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_khronos_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_leakcanary_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_leveldatabase_src_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libFuzzer_LICENSE.TXT
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libXNVCtrl_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libaddressinput_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libaddressinput_src_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libaddressinput_src_cpp_LICENSE.chromium
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libevdev_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libjingle_xmpp_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libjpeg_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libjpeg_turbo_LICENSE.md
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libpng_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libprotobuf-mutator_src_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libsecret_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libsrtp_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libsync_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libudev_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libusb_src_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libvpx_source_libvpx_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libvpx_source_libvpx_third_party_googletest_src_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libvpx_source_libvpx_third_party_libwebm_LICENSE.TXT
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libvpx_source_libvpx_third_party_x86inc_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libwebm_source_LICENSE.TXT
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libwebp_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libxml_src_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libxslt_linux_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_libyuv_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_mach_override_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_markupsafe_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_material_design_icons_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_mesa_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_mesa_src_docs_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_mesa_src_docs_license.html
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_mesa_src_src_gallium_drivers_radeon_LICENSE.TXT
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_mesa_src_src_mapi_glapi_gen_license.py
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_metrics_proto_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_minigbm_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_minigbm_src_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_minizip_src_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_mocha_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_mockito_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_modp_b64_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_molokocacao_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_motemplate_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_mozilla_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_mt19937ar_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_netty-tcnative_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_netty4_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_node_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_objenesis_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_openvr_src_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_opus_src_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ots_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ow2_asm_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_pdfium_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_pdfium_third_party_pymock_LICENSE.txt
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_pexpect_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ply_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ply_license.patch
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_polymer_v1_0_components-chromium_polymer_LICENSE.txt
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_proguard_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_protobuf_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_pycoverage_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_pyelftools_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_pyelftools_elftools_construct_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_pyftpdlib_src_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_pymock_LICENSE.txt
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_pystache_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_pywebsocket_src_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_qcms_src_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_qunit_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_re2_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_re2_src_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_requests_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_robolectric_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_s2cellid_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_sfntly_COPYING.txt
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_sfntly_src_cpp_COPYING.txt
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_shaderc_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_shaderc_src_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_shaderc_src_third_party_LICENSE.glslang
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_shaderc_src_third_party_LICENSE.spirv-tools
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_simplejson_LICENSE.txt
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_sinonjs_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_skia_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_skia_third_party_etc1_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_skia_third_party_gif_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_smhasher_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_snappy_src_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_sqlite4java_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_sudden_motion_sensor_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_LICENSE.txt
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_LLVM_LICENSE.TXT
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_LLVM_autoconf_LICENSE.TXT
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_LLVM_projects_sample_autoconf_LICENSE.TXT
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_LLVM_utils_unittest_googletest_LICENSE.TXT
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_llvm-subzero_LICENSE.TXT
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_subzero_LICENSE.TXT
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_tcmalloc_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_tcmalloc_vendor_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_tlslite_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_typ_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_ub-uiautomator_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_usb_ids_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_usrsctp_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_usrsctp_usrsctplib_LICENSE.md
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_v4l-utils_COPYING.libv4l
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_visualmetrics_src_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_vulkan_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_wayland-protocols_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_wayland-protocols_src_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_wayland_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_wds_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_wds_src_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_web-animations-js_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_web-animations-js_sources_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_webdriver_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_webdriver_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_webrtc_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_webrtc_LICENSE_THIRD_PARTY
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_webrtc_examples_androidapp_third_party_autobanh_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_webrtc_examples_androidapp_third_party_autobanh_LICENSE.md
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_webrtc_examples_objc_AppRTCMobile_third_party_SocketRocket_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_webrtc_license_template.txt
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_woff2_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_xdg-utils_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_xstream_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_yara_src_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_yasm_source_patched-yasm_COPYING
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_third_party_zlib_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_tools_gyp_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_tools_symsrc_COPYING-pefile
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_tools_win_ChromeDebug_ChromeDebug_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_url_third_party_mozilla_LICENSE.txt
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_v8_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_v8_LICENSE.fdlibm
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_v8_LICENSE.strongtalk
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_v8_LICENSE.v8
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_v8_LICENSE.valgrind
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_v8_src_third_party_utf8-decoder_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_v8_src_third_party_valgrind_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_v8_src_third_party_vtune_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_v8_third_party_colorama_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_chromium_v8_third_party_inspector_protocol_LICENSE
-/usr/share/doc/qtwebengine/src_3rdparty_ninja_COPYING
+/usr/libexec/QtWebEngineProcess
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/qtwebengine/LICENSE.Chromium
+/usr/share/package-licenses/qtwebengine/LICENSE.GPL2
+/usr/share/package-licenses/qtwebengine/LICENSE.GPL3
+/usr/share/package-licenses/qtwebengine/LICENSE.GPL3-EXCEPT
+/usr/share/package-licenses/qtwebengine/LICENSE.GPLv3
+/usr/share/package-licenses/qtwebengine/LICENSE.LGPL3
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_LICENSE.chromium_os
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_base_third_party_dmg_fp_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_base_third_party_dynamic_annotations_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_base_third_party_icu_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_base_third_party_libevent_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_base_third_party_nspr_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_base_third_party_superfasthash_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_base_third_party_symbolize_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_base_third_party_valgrind_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_base_third_party_xdg_mime_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_base_third_party_xdg_user_dirs_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_buildtools_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_chrome_third_party_chromevox_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_chrome_third_party_chromevox_third_party_closure-library_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_components_url_pattern_index_copying_file_stream.h
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_mojo_public_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_net_third_party_mozilla_security_manager_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_net_third_party_nss_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_ppapi_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_Python-Markdown_LICENSE.md
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_SPIRV-Tools_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_SPIRV-Tools_src_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_LICENSE_FOR_ABOUT_CREDITS
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_build_scripts_license.py
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_core_LICENSE-APPLE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_core_LICENSE-LGPL-2
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_core_LICENSE-LGPL-2.1
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_audits2_lighthouse_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_audits2_worker_lighthouse_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_cm_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_cm_LICENSE_python
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_cm_modes_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_formatter_worker_acorn_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_front_end_terminal_xterm.js_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_devtools_scripts_closure_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_platform_wtf_dtoa_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Source_platform_wtf_dtoa_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Tools_Scripts_webkitpy_thirdparty_mod_pywebsocket_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Tools_Scripts_webkitpy_thirdparty_wpt_wpt_LICENSE.md
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Tools_Scripts_webkitpy_thirdparty_wpt_wpt_tools_html5lib_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Tools_Scripts_webkitpy_thirdparty_wpt_wpt_tools_six_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_WebKit_Tools_Scripts_webkitpy_thirdparty_wpt_wpt_tools_wptserve_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_accessibility_test_framework_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_angle_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_angle_src_common_third_party_smhasher_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_angle_src_third_party_compiler_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_angle_src_third_party_libXNVCtrl_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_apache-portable-runtime_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_apk-patch-size-estimator_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_apple_apsl_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_axe-core_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_bazel_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_blanketjs_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_boringssl_src_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_boringssl_src_third_party_android-cmake_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_boringssl_src_third_party_fiat_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_boringssl_src_third_party_googletest_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_bouncycastle_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_breakpad_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_breakpad_breakpad_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_breakpad_breakpad_src_third_party_curl_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_breakpad_breakpad_src_third_party_libdisasm_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_breakpad_breakpad_src_third_party_musl_COPYRIGHT
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_brotli_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_bspatch_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_byte_buddy_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ced_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ced_src_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_chaijs_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_checkstyle_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_checkstyle_LICENSE.apache20
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_cld_3_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_cld_3_src_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_content_shell_fonts_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_crashpad_crashpad_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_crashpad_crashpad_third_party_apple_cf_APPLE_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_crc32c_src_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_cros_system_api_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_custom_tabs_client_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_d3_src_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_decklink_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devscripts_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_acorn-jsx_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_acorn-jsx_node_modules_acorn_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_acorn_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ajv-keywords_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ajv_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ansi-escapes_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ansi-regex_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ansi-styles_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_argparse_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_array-union_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_array-uniq_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_arrify_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_babel-code-frame_node_modules_chalk_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_babel-code-frame_node_modules_strip-ansi_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_balanced-match_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_chalk_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_chalk_node_modules_ansi-styles_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_chalk_node_modules_supports-color_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_chardet_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_circular-json_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_cli-cursor_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_cli-width_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_co_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_color-convert_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_color-name_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_concat-map_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_concat-stream_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_core-util-is_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_cross-spawn_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_debug_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_deep-is_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_del_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_doctrine_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_doctrine_LICENSE.esprima
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_escape-string-regexp_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_eslint-scope_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_eslint_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_espree_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_esprima_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_esquery_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_estraverse_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_esutils_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_external-editor_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_fast-deep-equal_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_fast-json-stable-stringify_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_fast-levenshtein_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_figures_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_file-entry-cache_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_flat-cache_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_fs.realpath_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_functional-red-black-tree_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_glob_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_globals_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_globby_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_graceful-fs_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_has-ansi_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_has-flag_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_iconv-lite_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_inflight_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_inherits_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_is-fullwidth-code-point_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_is-path-inside_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_is-promise_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_is-resolvable_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_isexe_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_js-tokens_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_js-yaml_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_json-schema-traverse_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_json-stable-stringify-without-jsonify_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_levn_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_lodash_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_lru-cache_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_mimic-fn_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_minimatch_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_minimist_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_mkdirp_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_ms_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_mute-stream_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_object-assign_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_once_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_onetime_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_optionator_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_os-tmpdir_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_path-is-absolute_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_path-is-inside_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_pify_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_pinkie-promise_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_pinkie_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_pluralize_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_prelude-ls_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_process-nextick-args_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_progress_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_pseudomap_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_readable-stream_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_require-uncached_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_resolve-from_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_restore-cursor_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_rimraf_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_run-async_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_safe-buffer_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_semver_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_shebang-command_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_shebang-regex_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_signal-exit_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_slice-ansi_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_sprintf-js_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_string-width_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_string_decoder_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_strip-ansi_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_strip-ansi_node_modules_ansi-regex_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_strip-json-comments_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_supports-color_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_table_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_text-table_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_through_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_through_LICENSE.MIT
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_tmp_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_type-check_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_typedarray_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_util-deprecate_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_which_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_wordwrap_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_wrappy_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_write_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_devtools-node-modules_third_party_node_modules_yallist_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_dom_distiller_js_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_errorprone_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_espresso_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_expat_files_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ffmpeg_COPYING.GPLv2
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ffmpeg_COPYING.GPLv3
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ffmpeg_COPYING.LGPLv2.1
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ffmpeg_COPYING.LGPLv3
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_fips181_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_flac_COPYING.FDL
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_flac_COPYING.GPL
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_flac_COPYING.LGPL
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_flac_COPYING.Xiph
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_flatbuffers_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_flatbuffers_src_LICENSE.txt
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_flot_LICENSE.txt
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_fontconfig_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_fontconfig_src_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_freetype_src_docs_GPLv2.TXT
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_freetype_src_docs_LICENSE.TXT
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_gestures_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_gestures_gestures_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_gif_player_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_glslang_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_googletest_src_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_googletest_src_googlemock_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_googletest_src_googlemock_scripts_generator_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_googletest_src_googletest_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_gson_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_guava_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_gvr-android-keyboard_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_gvr-android-sdk_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_haha_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_hamcrest_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_harfbuzz-ng_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_hunspell_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_hunspell_COPYING.LESSER
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_hunspell_COPYING.MPL
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_iaccessible2_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_iccjpeg_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_icu4j_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_icu_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_icu_license.html
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_icu_scripts_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ijar_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_inspector_protocol_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_intellij_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_isimpledom_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_javax_inject_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_jinja2_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_jmake_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_jsoncpp_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_jstemplate_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_khronos_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_leakcanary_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_leveldatabase_src_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libFuzzer_LICENSE.TXT
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libXNVCtrl_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libaddressinput_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libaddressinput_src_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libaddressinput_src_cpp_LICENSE.chromium
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libevdev_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libjingle_xmpp_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libjpeg_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libjpeg_turbo_LICENSE.md
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libpng_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libprotobuf-mutator_src_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libsecret_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libsrtp_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libsync_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libudev_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libusb_src_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libvpx_source_libvpx_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libvpx_source_libvpx_third_party_googletest_src_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libvpx_source_libvpx_third_party_libwebm_LICENSE.TXT
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libvpx_source_libvpx_third_party_x86inc_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libwebm_source_LICENSE.TXT
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libwebp_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libxml_src_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libxml_src_Copyright
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libxslt_linux_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libxslt_src_Copyright
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_libyuv_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_mach_override_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_markupsafe_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_material_design_icons_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_mesa_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_mesa_src_docs_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_mesa_src_docs_license.html
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_mesa_src_src_gallium_drivers_radeon_LICENSE.TXT
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_mesa_src_src_mapi_glapi_gen_license.py
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_metrics_proto_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_minigbm_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_minigbm_src_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_minizip_src_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_mocha_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_mockito_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_modp_b64_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_molokocacao_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_motemplate_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_mozilla_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_mt19937ar_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_netty-tcnative_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_netty4_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_node_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_objenesis_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ocmock_License.txt
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_openvr_src_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_opus_src_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ots_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ow2_asm_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_pdfium_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_pdfium_third_party_pymock_LICENSE.txt
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_perfetto_NOTICE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_pexpect_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ply_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ply_license.patch
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_polymer_v1_0_components-chromium_polymer_LICENSE.txt
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_proguard_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_protobuf_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_pycoverage_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_pyelftools_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_pyelftools_elftools_construct_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_pyftpdlib_src_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_pymock_LICENSE.txt
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_pystache_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_pywebsocket_src_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_qcms_src_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_qunit_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_re2_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_re2_src_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_requests_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_robolectric_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_s2cellid_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_sfntly_COPYING.txt
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_sfntly_src_cpp_COPYING.txt
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_shaderc_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_shaderc_src_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_shaderc_src_third_party_LICENSE.glslang
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_shaderc_src_third_party_LICENSE.spirv-tools
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_simplejson_LICENSE.txt
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_sinonjs_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_skia_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_skia_third_party_etc1_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_skia_third_party_gif_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_smhasher_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_snappy_src_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_sqlite4java_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_sudden_motion_sensor_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_LICENSE.txt
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_LLVM_LICENSE.TXT
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_LLVM_autoconf_LICENSE.TXT
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_LLVM_projects_sample_autoconf_LICENSE.TXT
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_LLVM_utils_unittest_googletest_LICENSE.TXT
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_llvm-subzero_LICENSE.TXT
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_swiftshader_third_party_subzero_LICENSE.TXT
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_tcmalloc_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_tcmalloc_vendor_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_tcmalloc_vendor_packages_deb_copyright
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_tlslite_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_typ_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_ub-uiautomator_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_usb_ids_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_usrsctp_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_usrsctp_usrsctplib_LICENSE.md
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_v4l-utils_COPYING.libv4l
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_visualmetrics_src_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_vulkan_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_wayland-protocols_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_wayland-protocols_src_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_wayland_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_wds_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_wds_src_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_web-animations-js_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_web-animations-js_sources_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_webdriver_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_webdriver_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_webrtc_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_webrtc_LICENSE_THIRD_PARTY
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_webrtc_examples_androidapp_third_party_autobanh_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_webrtc_examples_androidapp_third_party_autobanh_LICENSE.md
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_webrtc_examples_androidapp_third_party_autobanh_NOTICE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_webrtc_examples_objc_AppRTCMobile_third_party_SocketRocket_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_webrtc_license_template.txt
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_woff2_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_xdg-utils_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_xstream_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_yara_src_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_yasm_source_patched-yasm_Artistic.txt
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_yasm_source_patched-yasm_COPYING
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_third_party_zlib_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_tools_gyp_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_tools_symsrc_COPYING-pefile
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_tools_win_ChromeDebug_ChromeDebug_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_url_third_party_mozilla_LICENSE.txt
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_v8_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_v8_LICENSE.fdlibm
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_v8_LICENSE.strongtalk
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_v8_LICENSE.v8
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_v8_LICENSE.valgrind
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_v8_src_third_party_utf8-decoder_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_v8_src_third_party_valgrind_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_v8_src_third_party_vtune_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_v8_third_party_colorama_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_chromium_v8_third_party_inspector_protocol_LICENSE
+/usr/share/package-licenses/qtwebengine/src_3rdparty_ninja_COPYING
