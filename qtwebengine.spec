@@ -4,7 +4,7 @@
 #
 Name     : qtwebengine
 Version  : 5.11.1.clean
-Release  : 10
+Release  : 11
 URL      : https://src.fedoraproject.org/repo/pkgs/rpms/qt5-qtwebengine/qtwebengine-everywhere-src-5.11.1-clean.tar.xz/sha512/59e9ea806e81ca56c858b7f391fd9c27ea889090e3c6f6168ffea6bd13fd2f78f7301b1f4487a79dea2ea48066fa657cd53a1d8c584258e4738b9030b970aea4/qtwebengine-everywhere-src-5.11.1-clean.tar.xz
 Source0  : https://src.fedoraproject.org/repo/pkgs/rpms/qt5-qtwebengine/qtwebengine-everywhere-src-5.11.1-clean.tar.xz/sha512/59e9ea806e81ca56c858b7f391fd9c27ea889090e3c6f6168ffea6bd13fd2f78f7301b1f4487a79dea2ea48066fa657cd53a1d8c584258e4738b9030b970aea4/qtwebengine-everywhere-src-5.11.1-clean.tar.xz
 Summary  : tlslite implements SSL and TLS.
@@ -125,14 +125,6 @@ to select sub nodes or ranges. A flexible Input/Output mechanism is
 available, with existing HTTP and FTP modules and combined to an
 URI library.
 
-%package abi
-Summary: abi components for the qtwebengine package.
-Group: Default
-
-%description abi
-abi components for the qtwebengine package.
-
-
 %package bin
 Summary: bin components for the qtwebengine package.
 Group: Binaries
@@ -205,7 +197,7 @@ test -r config.log && cat config.log
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1541277319
+export SOURCE_DATE_EPOCH=1542755690
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/qtwebengine
 cp LICENSE.Chromium %{buildroot}/usr/share/package-licenses/qtwebengine/LICENSE.Chromium
@@ -634,18 +626,6 @@ cp src/3rdparty/ninja/COPYING %{buildroot}/usr/share/package-licenses/qtwebengin
 
 %files
 %defattr(-,root,root,-)
-
-%files abi
-%defattr(-,root,root,-)
-/usr/share/abi/libQt5WebEngine.so.5.11.1.abi
-/usr/share/abi/libQt5WebEngine.so.5.11.abi
-/usr/share/abi/libQt5WebEngine.so.5.abi
-/usr/share/abi/libQt5WebEngineCore.so.5.11.1.abi
-/usr/share/abi/libQt5WebEngineCore.so.5.11.abi
-/usr/share/abi/libQt5WebEngineCore.so.5.abi
-/usr/share/abi/libQt5WebEngineWidgets.so.5.11.1.abi
-/usr/share/abi/libQt5WebEngineWidgets.so.5.11.abi
-/usr/share/abi/libQt5WebEngineWidgets.so.5.abi
 
 %files bin
 %defattr(-,root,root,-)
