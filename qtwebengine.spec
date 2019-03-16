@@ -4,7 +4,7 @@
 #
 Name     : qtwebengine
 Version  : 5.12.1.clean
-Release  : 17
+Release  : 18
 URL      : https://src.fedoraproject.org/repo/pkgs/rpms/qt5-qtwebengine/qtwebengine-everywhere-src-5.12.1-clean.tar.xz/sha512/779d63b93849a6a5b8ecea1c1480ce80c01cc678929947ba64ea5003f9de51e76b49f06d9f0dee89afb28a7713f11d2a7412b55acb3203c548ca8ebf564b30cb/qtwebengine-everywhere-src-5.12.1-clean.tar.xz
 Source0  : https://src.fedoraproject.org/repo/pkgs/rpms/qt5-qtwebengine/qtwebengine-everywhere-src-5.12.1-clean.tar.xz/sha512/779d63b93849a6a5b8ecea1c1480ce80c01cc678929947ba64ea5003f9de51e76b49f06d9f0dee89afb28a7713f11d2a7412b55acb3203c548ca8ebf564b30cb/qtwebengine-everywhere-src-5.12.1-clean.tar.xz
 Summary  : Character encoding aliases for legacy web content
@@ -120,6 +120,7 @@ BuildRequires : sed
 BuildRequires : setuptools
 BuildRequires : six
 BuildRequires : snappy-dev
+Patch1: 0001-Fix-build-after-qtdeclarative-change-9e3c46961a.patch
 
 %description
 ===================
@@ -187,6 +188,7 @@ license components for the qtwebengine package.
 
 %prep
 %setup -q -n qtwebengine-everywhere-src-5.12.1
+%patch1 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
@@ -198,7 +200,7 @@ test -r config.log && cat config.log
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1549665091
+export SOURCE_DATE_EPOCH=1552727533
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/qtwebengine
 cp LICENSE.Chromium %{buildroot}/usr/share/package-licenses/qtwebengine/LICENSE.Chromium
