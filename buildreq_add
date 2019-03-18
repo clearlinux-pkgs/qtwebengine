@@ -1,15 +1,16 @@
 # This file contains additional build requirements that did not get
 # picked up automatically. One name per line, no whitespace.
+alsa-lib-dev
 bison
 flex
 gperf
-python
-ninja
-alsa-lib-dev
 icu4c-dev
 libjpeg-turbo-dev
-libvpx-dev
-qttools-dev
-snappy-dev
 libsrtp-dev
 libvpx-dev
+libvpx-dev
+ninja
+python
+qttools-dev
+re2-dev
+snappy-dev
