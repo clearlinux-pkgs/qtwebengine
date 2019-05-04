@@ -1,0 +1,43 @@
+From 1bdd9167f2fa43ce645f97746393a43d72b46311 Mon Sep 17 00:00:00 2001
+From: Thiago Macieira <thiago.macieira@intel.com>
+Date: Tue, 29 Jan 2019 21:54:35 -0800
+Subject: [PATCH] Pass -j flags from the outer make to ninja
+
+Since ninja won't communicate with GNU make over the job control
+channel, force this Makefile to run in non-parallel mode.
+
+This overrides the solution from 3e9cf092689dcd85bf5a5709eab6cbd2785b42b8.
+
+Change-Id: I32d7cf321e3a459a9ae6fffd157e8a97a8996821
+---
+ src/core/gn_run.pro | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/src/core/gn_run.pro b/src/core/gn_run.pro
+index 9860c454..20985224 100644
+--- a/src/core/gn_run.pro
++++ b/src/core/gn_run.pro
+@@ -46,10 +46,19 @@ build_pass|!debug_and_release {
+         error("GN run error!")
+     }
+ 
++    unix {
++        # Extract the -j flag from the GNU make variable $(MAKEFLAGS)
++        # (this is not a qmake variable or an environment one).  See
++        # also .NOTPARALLEL below. This ought to be used for MinGW too
++        # but we can't be sure sed is present.
++
++        ninjajobs += `echo $(MAKEFLAGS) | $(SED) -En $$system_quote(/(.* |^)(-j[0-9]*)($| .*)/s//\2/p)`
++    }
++
+     ninjaflags = $$(NINJAFLAGS)
+     isEmpty(ninjaflags):!silent: ninjaflags = "-v"
+ 
+-    runninja.commands = $$NINJA $$ninjaflags -C $$gn_build_root QtWebEngineCore
++    runninja.commands = $$NINJA $$ninjajobs $$ninjaflags -C $$gn_build_root QtWebEngineCore
+     QMAKE_EXTRA_TARGETS += runninja
+ 
+     build_pass:build_all: default_target.target = all
+-- 
+2.21.0
+
