@@ -4,7 +4,7 @@
 #
 Name     : qtwebengine
 Version  : 5.12.1.clean
-Release  : 19
+Release  : 20
 URL      : https://src.fedoraproject.org/repo/pkgs/rpms/qt5-qtwebengine/qtwebengine-everywhere-src-5.12.1-clean.tar.xz/sha512/779d63b93849a6a5b8ecea1c1480ce80c01cc678929947ba64ea5003f9de51e76b49f06d9f0dee89afb28a7713f11d2a7412b55acb3203c548ca8ebf564b30cb/qtwebengine-everywhere-src-5.12.1-clean.tar.xz
 Source0  : https://src.fedoraproject.org/repo/pkgs/rpms/qt5-qtwebengine/qtwebengine-everywhere-src-5.12.1-clean.tar.xz/sha512/779d63b93849a6a5b8ecea1c1480ce80c01cc678929947ba64ea5003f9de51e76b49f06d9f0dee89afb28a7713f11d2a7412b55acb3203c548ca8ebf564b30cb/qtwebengine-everywhere-src-5.12.1-clean.tar.xz
 Summary  : Character encoding aliases for legacy web content
@@ -24,6 +24,7 @@ BuildRequires : buildreq-cmake
 BuildRequires : buildreq-cpan
 BuildRequires : buildreq-distutils3
 BuildRequires : buildreq-golang
+BuildRequires : buildreq-php
 BuildRequires : buildreq-qmake
 BuildRequires : buildreq-scons
 BuildRequires : docbook-xml
@@ -154,6 +155,7 @@ Requires: qtwebengine-lib = %{version}-%{release}
 Requires: qtwebengine-bin = %{version}-%{release}
 Requires: qtwebengine-data = %{version}-%{release}
 Provides: qtwebengine-devel = %{version}-%{release}
+Requires: qtwebengine = %{version}-%{release}
 
 %description dev
 dev components for the qtwebengine package.
@@ -201,7 +203,7 @@ test -r config.log && cat config.log
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1552890446
+export SOURCE_DATE_EPOCH=1556932076
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/qtwebengine
 cp LICENSE.Chromium %{buildroot}/usr/share/package-licenses/qtwebengine/LICENSE.Chromium
