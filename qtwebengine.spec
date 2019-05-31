@@ -4,12 +4,12 @@
 #
 Name     : qtwebengine
 Version  : 5.12.3.clean
-Release  : 21
+Release  : 22
 URL      : https://src.fedoraproject.org/repo/pkgs/rpms/qt5-qtwebengine/qtwebengine-everywhere-src-5.12.3-clean.tar.xz/sha512/155a36fd1329d608bd5e95b715b6a301e7f823750e0229e2b4533133f30be129935fbb352230303b0ac9cc6063a8a4c128700a5ecb0be57133bfb4b32f2d0a3a/qtwebengine-everywhere-src-5.12.3-clean.tar.xz
 Source0  : https://src.fedoraproject.org/repo/pkgs/rpms/qt5-qtwebengine/qtwebengine-everywhere-src-5.12.3-clean.tar.xz/sha512/155a36fd1329d608bd5e95b715b6a301e7f823750e0229e2b4533133f30be129935fbb352230303b0ac9cc6063a8a4c128700a5ecb0be57133bfb4b32f2d0a3a/qtwebengine-everywhere-src-5.12.3-clean.tar.xz
 Summary  : Ninja is a small build system with a focus on speed.
 Group    : Development/Tools
-License  : AFL-2.0 APSL-2.0 Apache-2.0 Artistic-1.0-Perl Artistic-2.0 BSD-2-Clause BSD-3-Clause BSD-3-Clause-Clear BSL-1.0 ClArtistic FTL GFDL-1.2 GPL-2.0 GPL-3.0 HPND ICU IJG ISC LGPL-2.0 LGPL-2.1 LGPL-3.0 Libpng MIT MPL-1.1 MPL-2.0-no-copyleft-exception NCSA NTP OFL-1.1 OpenSSL Public-Domain SGI-B-2.0 Unlicense Zlib bzip2-1.0.6
+License  : AFL-2.0 APSL-2.0 Apache-2.0 Artistic-1.0-Perl Artistic-2.0 BSD-2-Clause BSD-3-Clause BSD-3-Clause-Clear BSL-1.0 ClArtistic FTL GFDL-1.2 GPL-2.0 GPL-3.0 HPND ICU IJG ISC LGPL-2.0 LGPL-2.1 LGPL-3.0 Libpng MIT MPL-1.1 MPL-2.0 MPL-2.0-no-copyleft-exception NCSA NTP OFL-1.1 OpenSSL Public-Domain SGI-B-2.0 Unlicense Zlib bzip2-1.0.6
 Requires: qtwebengine-bin = %{version}-%{release}
 Requires: qtwebengine-data = %{version}-%{release}
 Requires: qtwebengine-lib = %{version}-%{release}
@@ -123,6 +123,7 @@ BuildRequires : setuptools
 BuildRequires : six
 BuildRequires : snappy-dev
 Patch1: 0001-Pass-j-flags-from-the-outer-make-to-ninja.patch
+Patch2: 0002-Don-t-allow-QtWebEngineCore-to-request-executable-st.patch
 
 %description
 Ninja is yet another build system. It takes as input the interdependencies of files (typically source code and output executables) and
@@ -195,18 +196,20 @@ license components for the qtwebengine package.
 %prep
 %setup -q -n qtwebengine-everywhere-src-5.12.3
 %patch1 -p1
+%patch2 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
+export GCC_IGNORE_WERROR=1
 %qmake
 test -r config.log && cat config.log
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1556989200
+export SOURCE_DATE_EPOCH=1559326292
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/qtwebengine
 cp LICENSE.Chromium %{buildroot}/usr/share/package-licenses/qtwebengine/LICENSE.Chromium

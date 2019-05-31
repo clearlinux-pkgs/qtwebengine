@@ -1,1 +1,2 @@
 0001-Pass-j-flags-from-the-outer-make-to-ninja.patch
+0002-Don-t-allow-QtWebEngineCore-to-request-executable-st.patch
