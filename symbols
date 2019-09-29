@@ -4,7 +4,8 @@ libQt5WebEngine.so.5:Qt_5.1
 libQt5WebEngine.so.5:Qt_5.10
 libQt5WebEngine.so.5:Qt_5.11
 libQt5WebEngine.so.5:Qt_5.12
-libQt5WebEngine.so.5:Qt_5.12.4_PRIVATE_API
+libQt5WebEngine.so.5:Qt_5.13
+libQt5WebEngine.so.5:Qt_5.13.1_PRIVATE_API
 libQt5WebEngine.so.5:Qt_5.2
 libQt5WebEngine.so.5:Qt_5.3
 libQt5WebEngine.so.5:Qt_5.4
@@ -290,6 +291,7 @@ libQt5WebEngine.so.5:_ZN26QQuickWebEngineViewPrivate17didPrintPageToPdfERK7QStri
 libQt5WebEngine.so.5:_ZN26QQuickWebEngineViewPrivate17initializeProfileEv
 libQt5WebEngine.so.5:_ZN26QQuickWebEngineViewPrivate17setFullScreenModeEb
 libQt5WebEngine.so.5:_ZN26QQuickWebEngineViewPrivate17unhandledKeyEventEP9QKeyEvent
+libQt5WebEngine.so.5:_ZN26QQuickWebEngineViewPrivate17updateEditActionsEv
 libQt5WebEngine.so.5:_ZN26QQuickWebEngineViewPrivate17userScripts_clearEP16QQmlListPropertyI21QQuickWebEngineScriptE
 libQt5WebEngine.so.5:_ZN26QQuickWebEngineViewPrivate17userScripts_countEP16QQmlListPropertyI21QQuickWebEngineScriptE
 libQt5WebEngine.so.5:_ZN26QQuickWebEngineViewPrivate18didUpdateTargetURLERK4QUrl
@@ -648,7 +650,8 @@ libQt5WebEngineCore.so.5:Qt_5.1
 libQt5WebEngineCore.so.5:Qt_5.10
 libQt5WebEngineCore.so.5:Qt_5.11
 libQt5WebEngineCore.so.5:Qt_5.12
-libQt5WebEngineCore.so.5:Qt_5.12.4_PRIVATE_API
+libQt5WebEngineCore.so.5:Qt_5.13
+libQt5WebEngineCore.so.5:Qt_5.13.1_PRIVATE_API
 libQt5WebEngineCore.so.5:Qt_5.2
 libQt5WebEngineCore.so.5:Qt_5.3
 libQt5WebEngineCore.so.5:Qt_5.4
@@ -1144,6 +1147,7 @@ libQt5WebEngineCore.so.5:_ZNK15QtWebEngineCore18WebContentsAdapter12isAudioMuted
 libQt5WebEngineCore.so.5:_ZNK15QtWebEngineCore18WebContentsAdapter12requestedUrlEv
 libQt5WebEngineCore.so.5:_ZNK15QtWebEngineCore18WebContentsAdapter12selectedTextEv
 libQt5WebEngineCore.so.5:_ZNK15QtWebEngineCore18WebContentsAdapter13isInitializedEv
+libQt5WebEngineCore.so.5:_ZNK15QtWebEngineCore18WebContentsAdapter15hasFocusedFrameEv
 libQt5WebEngineCore.so.5:_ZNK15QtWebEngineCore18WebContentsAdapter16lastContentsSizeEv
 libQt5WebEngineCore.so.5:_ZNK15QtWebEngineCore18WebContentsAdapter16lastScrollOffsetEv
 libQt5WebEngineCore.so.5:_ZNK15QtWebEngineCore18WebContentsAdapter17currentZoomFactorEv
@@ -1222,7 +1226,8 @@ libQt5WebEngineWidgets.so.5:Qt_5.1
 libQt5WebEngineWidgets.so.5:Qt_5.10
 libQt5WebEngineWidgets.so.5:Qt_5.11
 libQt5WebEngineWidgets.so.5:Qt_5.12
-libQt5WebEngineWidgets.so.5:Qt_5.12.4_PRIVATE_API
+libQt5WebEngineWidgets.so.5:Qt_5.13
+libQt5WebEngineWidgets.so.5:Qt_5.13.1_PRIVATE_API
 libQt5WebEngineWidgets.so.5:Qt_5.2
 libQt5WebEngineWidgets.so.5:Qt_5.3
 libQt5WebEngineWidgets.so.5:Qt_5.4
