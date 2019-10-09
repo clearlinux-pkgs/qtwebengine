@@ -1,0 +1,25 @@
+From 5d885c834f30fd494cd7765487318d61266b452e Mon Sep 17 00:00:00 2001
+From: Thiago Macieira <thiago.macieira@intel.com>
+Date: Wed, 9 Oct 2019 15:08:49 -0700
+Subject: [PATCH] Make the warning "will not be built" an error
+
+Change-Id: Ice82936da3fe451a8d17fffd15cc19f97651745d
+---
+ qtwebengine.pro | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/qtwebengine.pro b/qtwebengine.pro
+index 620f451f..6c29521d 100644
+--- a/qtwebengine.pro
++++ b/qtwebengine.pro
+@@ -7,6 +7,7 @@ runConfigure()
+     SUBDIRS =
+     log($${skipBuildReason}$${EOL})
+     log(QtWebEngine will not be built.$${EOL})
++    error()
+ }
+ 
+ QMAKE_DISTCLEAN += .qmake.cache
+-- 
+2.23.0
+
