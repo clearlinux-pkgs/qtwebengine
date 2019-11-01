@@ -4,7 +4,7 @@
 #
 Name     : qtwebengine
 Version  : 5.12.5.clean
-Release  : 28
+Release  : 29
 URL      : https://src.fedoraproject.org/repo/pkgs/rpms/qt5-qtwebengine/qtwebengine-everywhere-src-5.12.5-clean.tar.xz/sha512/d6e33121d5c4c467051ecb3025890ed4e87c9964e1c83753718a7de3ebec95f144f06b9454218022a3c5d60bd7c351b387e87f5e65b68679ab853290b6edd325/qtwebengine-everywhere-src-5.12.5-clean.tar.xz
 Source0  : https://src.fedoraproject.org/repo/pkgs/rpms/qt5-qtwebengine/qtwebengine-everywhere-src-5.12.5-clean.tar.xz/sha512/d6e33121d5c4c467051ecb3025890ed4e87c9964e1c83753718a7de3ebec95f144f06b9454218022a3c5d60bd7c351b387e87f5e65b68679ab853290b6edd325/qtwebengine-everywhere-src-5.12.5-clean.tar.xz
 Summary  : Ninja is a small build system with a focus on speed.
@@ -130,6 +130,38 @@ BuildRequires : snappy-dev
 Patch1: 0001-Pass-j-flags-from-the-outer-make-to-ninja.patch
 Patch2: 0002-Make-the-warning-will-not-be-built-an-error.patch
 Patch3: CVE-2019-8457.patch
+Patch4: stable-branch-0001-macOS-Rename-Chromium-bootstrap-name-to-prevent-coll.patch
+Patch5: stable-branch-0002-Fix-building-with-pulseaudio-13.patch
+Patch6: stable-branch-0003-Backport-Fix-security-issue-957160.patch
+Patch7: stable-branch-0004-Backport-Fix-CVE-2019-5869.patch
+Patch8: stable-branch-0005-Add-missing-semicolon-to-fix-build-with-icu-65.1.patch
+Patch9: stable-branch-0006-Backport-CVE-2019-5870.patch
+Patch10: stable-branch-0007-Backport-CVE-2019-13659.patch
+Patch11: stable-branch-0008-Backport-CVE-2019-13660.patch
+Patch12: stable-branch-0009-Backport-CVE-2019-5875.patch
+Patch13: stable-branch-0010-Fix-building-with-VS2019.patch
+Patch14: stable-branch-0011-Backport-CVE-2019-5876.patch
+Patch15: stable-branch-0012-Backport-CVE-2019-13687.patch
+Patch16: stable-branch-0013-Backport-CVE-2019-13688.patch
+Patch17: stable-branch-0014-Backport-CVE-2019-13691.patch
+Patch18: stable-branch-0015-Backport-CVE-2019-13692.patch
+Patch19: stable-branch-0016-Backport-CVE-2019-13693.patch
+Patch20: stable-branch-0017-Backport-CVE-2019-13694.patch
+Patch21: stable-branch-0018-Backport-CVE-2019-13695.patch
+Patch22: stable-branch-0019-Backport-CVE-2019-13697.patch
+Patch23: stable-branch-0020-Backport-Security-issue-986727-1-2.patch
+Patch24: stable-branch-0021-Backport-Security-issue-986727-2-2.patch
+Patch25: stable-branch-0022-Backport-Fix-for-CVE-2019-13720.patch
+Patch26: stable-branch-0023-Backport-CVE-2019-13664.patch
+Patch27: stable-branch-0024-Backport-CVE-2019-13665.patch
+Patch28: stable-branch-0025-Backport-Security-issue-946351.patch
+Patch29: stable-branch-0026-Backport-Security-issue-964938.patch
+Patch30: stable-branch-0027-Backport-Security-issue-990234.patch
+Patch31: stable-branch-0028-Backport-CVE-2019-13674.patch
+Patch32: stable-branch-0029-Backport-CVE-2019-13675.patch
+Patch33: stable-branch-0030-Backport-Security-issue-960354.patch
+Patch34: stable-branch-0031-Backport-Security-issue-979373.patch
+Patch35: stable-branch-0032-Backport-Security-issue-981459.patch
 
 %description
 Ninja is yet another build system. It takes as input the interdependencies of files (typically source code and output executables) and
@@ -201,9 +233,42 @@ license components for the qtwebengine package.
 
 %prep
 %setup -q -n qtwebengine-everywhere-src-5.12.5
+cd %{_builddir}/qtwebengine-everywhere-src-5.12.5
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
+%patch5 -p1
+%patch6 -p1
+%patch7 -p1
+%patch8 -p1
+%patch9 -p1
+%patch10 -p1
+%patch11 -p1
+%patch12 -p1
+%patch13 -p1
+%patch14 -p1
+%patch15 -p1
+%patch16 -p1
+%patch17 -p1
+%patch18 -p1
+%patch19 -p1
+%patch20 -p1
+%patch21 -p1
+%patch22 -p1
+%patch23 -p1
+%patch24 -p1
+%patch25 -p1
+%patch26 -p1
+%patch27 -p1
+%patch28 -p1
+%patch29 -p1
+%patch30 -p1
+%patch31 -p1
+%patch32 -p1
+%patch33 -p1
+%patch34 -p1
+%patch35 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
@@ -220,7 +285,7 @@ test -r config.log && cat config.log
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1571136796
+export SOURCE_DATE_EPOCH=1572631807
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/qtwebengine
 cp %{_builddir}/qtwebengine-everywhere-src-5.12.5/LICENSE.Chromium %{buildroot}/usr/share/package-licenses/qtwebengine/44d95d73e9ffde5cd25aac40bce60bd553b9a478
@@ -638,6 +703,7 @@ cp %{_builddir}/qtwebengine-everywhere-src-5.12.5/src/3rdparty/chromium/third_pa
 cp %{_builddir}/qtwebengine-everywhere-src-5.12.5/src/3rdparty/chromium/third_party/webdriver/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/dd1a711a26a79875b477ea57e88d78ab323edb1f
 cp %{_builddir}/qtwebengine-everywhere-src-5.12.5/src/3rdparty/chromium/third_party/webdriver/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/8611981c0b9ea306596a818c651841b06968e199
 cp %{_builddir}/qtwebengine-everywhere-src-5.12.5/src/3rdparty/chromium/third_party/webrtc/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/66baa1f88c8056f377c736786848297ce948ee90
+cp %{_builddir}/qtwebengine-everywhere-src-5.12.5/src/3rdparty/chromium/third_party/webrtc/LICENSE_THIRD_PARTY %{buildroot}/usr/share/package-licenses/qtwebengine/9d536cbb62d952fbbbc11d7d4db9c5ffc6fb70aa
 cp %{_builddir}/qtwebengine-everywhere-src-5.12.5/src/3rdparty/chromium/third_party/webrtc/examples/androidapp/third_party/autobanh/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/598f87f072f66e2269dd6919292b2934dbb20492
 cp %{_builddir}/qtwebengine-everywhere-src-5.12.5/src/3rdparty/chromium/third_party/webrtc/examples/androidapp/third_party/autobanh/LICENSE.md %{buildroot}/usr/share/package-licenses/qtwebengine/39bd4cf398244097a1626532382330e6b55cb9ee
 cp %{_builddir}/qtwebengine-everywhere-src-5.12.5/src/3rdparty/chromium/third_party/webrtc/examples/androidapp/third_party/autobanh/NOTICE %{buildroot}/usr/share/package-licenses/qtwebengine/635c546f061cb4171c7cf65409471926a89647d3
@@ -1091,6 +1157,7 @@ cp %{_builddir}/qtwebengine-everywhere-src-5.12.5/src/3rdparty/ninja/COPYING %{b
 /usr/share/package-licenses/qtwebengine/94b23e546e334f64804efcafd6ea49cef1606a50
 /usr/share/package-licenses/qtwebengine/95dda2529b4ac0e8527bc04026f1f97aea87672a
 /usr/share/package-licenses/qtwebengine/98d051673de64cfd533ded6d75f1526f5f4f27af
+/usr/share/package-licenses/qtwebengine/9d536cbb62d952fbbbc11d7d4db9c5ffc6fb70aa
 /usr/share/package-licenses/qtwebengine/9def7167175d2ac68505dd2ae0c7b8dd63bc4c3d
 /usr/share/package-licenses/qtwebengine/9e0d9f9cb7fa0c3fb4e15afd9692948d857209bb
 /usr/share/package-licenses/qtwebengine/9e720fbf1e8323585d4c89abb8b85e7e6a69a3a0

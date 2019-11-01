@@ -1,0 +1,16 @@
+GIT_DIR = ~/src/qt/qt5/qtwebengine/src/3rdparty
+GIT_BRANCH = origin/69-based
+GIT_TAG = v$(shell rpmspec --srpm -q --queryformat '%{VERSION}' qtwebengine.spec | sed 's/.clean//')
+update:
+	sed -i '/^stable-branch/d' series
+	mkdir -p stable-branch
+	rm -f stable-branch-*.patch
+	git -C $(GIT_DIR) fetch
+	git -C $(GIT_DIR) format-patch
+	git -C $(GIT_DIR) format-patch -N -o $$PWD/stable-branch --src-prefix=a/src/3rdparty/ --dst-prefix=b/src/3rdparty/ $(GIT_TAG)..$(GIT_BRANCH)
+	rename stable-branch/ stable-branch- stable-branch/*.patch
+	ls -1 stable-branch-*.patch >> series
+	! git diff --exit-code series > /dev/null
+	$(MAKE) autospec
+	git commit --amend -m "stable updates to $(git -C $(GIT_DIR) describe $(GIT_BRANCH)"
+	test -n "$(NO_KOJI)" || $(MAKE) koji-nowait

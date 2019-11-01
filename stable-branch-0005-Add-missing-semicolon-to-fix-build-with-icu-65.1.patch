@@ -1,0 +1,27 @@
+From e6902ac08d4fc73cc0f9e978a3bf360c055b4b79 Mon Sep 17 00:00:00 2001
+From: Heiko Becker <heirecka@exherbo.org>
+Date: Fri, 4 Oct 2019 16:08:57 +0200
+Subject: [PATCH] Add missing semicolon to fix build with icu 65.1
+
+Change-Id: I045f5cc1ca30fd93591e1c2bd292b2cfa2c69a9c
+Reviewed-by: Allan Sandfeld Jensen <allan.jensen@qt.io>
+---
+ chromium/third_party/blink/renderer/core/dom/document.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/3rdparty/chromium/third_party/blink/renderer/core/dom/document.cc b/src/3rdparty/chromium/third_party/blink/renderer/core/dom/document.cc
+index e3a946a166b..4aaba25e6ae 100644
+--- a/src/3rdparty/chromium/third_party/blink/renderer/core/dom/document.cc
++++ b/src/3rdparty/chromium/third_party/blink/renderer/core/dom/document.cc
+@@ -5483,7 +5483,7 @@ static ParseQualifiedNameResult ParseQualifiedNameInternal(
+ 
+   for (unsigned i = 0; i < length;) {
+     UChar32 c;
+-    U16_NEXT(characters, i, length, c)
++    U16_NEXT(characters, i, length, c);
+     if (c == ':') {
+       if (saw_colon)
+         return ParseQualifiedNameResult(kQNMultipleColons);
+-- 
+2.23.0
+

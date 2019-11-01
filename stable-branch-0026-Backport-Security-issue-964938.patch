@@ -1,0 +1,40 @@
+From bf49c9261e8e1f42f23cde58114f58c547911e28 Mon Sep 17 00:00:00 2001
+From: Allan Sandfeld Jensen <allan.jensen@qt.io>
+Date: Tue, 15 Oct 2019 12:27:26 +0200
+Subject: [PATCH] [Backport] Security issue 964938
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Attempt to resolve the msan bug reported.
+
+The bug is not reproducible locally. So just
+trying this to see whether it has any effect
+on clusterfuzz.
+
+Bug: 964938
+Change-Id: I1ac7bee442facf2f4764b16e80caa766e0000e75
+Reviewed-by: Timothy Dresser <tdresser@chromium.org>
+Commit-Queue: Navid Zolghadr <nzolghadr@chromium.org>
+Cr-Commit-Position: refs/heads/master@{#670492}
+Reviewed-by: Michael Brüning <michael.bruning@qt.io>
+---
+ chromium/ui/events/gesture_detection/velocity_tracker.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/3rdparty/chromium/ui/events/gesture_detection/velocity_tracker.cc b/src/3rdparty/chromium/ui/events/gesture_detection/velocity_tracker.cc
+index b0f984026e4..0f2cffc1455 100644
+--- a/src/3rdparty/chromium/ui/events/gesture_detection/velocity_tracker.cc
++++ b/src/3rdparty/chromium/ui/events/gesture_detection/velocity_tracker.cc
+@@ -630,7 +630,7 @@ bool LeastSquaresVelocityTrackerStrategy::GetEstimator(
+     degree = m - 1;
+ 
+   if (degree >= 1) {
+-    float xdet, ydet;
++    float xdet = 0, ydet = 0;
+     uint32_t n = degree + 1;
+     if (SolveLeastSquares(time, x, w, m, n, out_estimator->xcoeff, &xdet) &&
+         SolveLeastSquares(time, y, w, m, n, out_estimator->ycoeff, &ydet)) {
+-- 
+2.23.0
+

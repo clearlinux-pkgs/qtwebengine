@@ -5,7 +5,7 @@ libQt5WebEngine.so.5:Qt_5.10
 libQt5WebEngine.so.5:Qt_5.11
 libQt5WebEngine.so.5:Qt_5.12
 libQt5WebEngine.so.5:Qt_5.13
-libQt5WebEngine.so.5:Qt_5.13.1_PRIVATE_API
+libQt5WebEngine.so.5:Qt_5.13.2_PRIVATE_API
 libQt5WebEngine.so.5:Qt_5.2
 libQt5WebEngine.so.5:Qt_5.3
 libQt5WebEngine.so.5:Qt_5.4
@@ -651,7 +651,7 @@ libQt5WebEngineCore.so.5:Qt_5.10
 libQt5WebEngineCore.so.5:Qt_5.11
 libQt5WebEngineCore.so.5:Qt_5.12
 libQt5WebEngineCore.so.5:Qt_5.13
-libQt5WebEngineCore.so.5:Qt_5.13.1_PRIVATE_API
+libQt5WebEngineCore.so.5:Qt_5.13.2_PRIVATE_API
 libQt5WebEngineCore.so.5:Qt_5.2
 libQt5WebEngineCore.so.5:Qt_5.3
 libQt5WebEngineCore.so.5:Qt_5.4
@@ -1227,7 +1227,7 @@ libQt5WebEngineWidgets.so.5:Qt_5.10
 libQt5WebEngineWidgets.so.5:Qt_5.11
 libQt5WebEngineWidgets.so.5:Qt_5.12
 libQt5WebEngineWidgets.so.5:Qt_5.13
-libQt5WebEngineWidgets.so.5:Qt_5.13.1_PRIVATE_API
+libQt5WebEngineWidgets.so.5:Qt_5.13.2_PRIVATE_API
 libQt5WebEngineWidgets.so.5:Qt_5.2
 libQt5WebEngineWidgets.so.5:Qt_5.3
 libQt5WebEngineWidgets.so.5:Qt_5.4

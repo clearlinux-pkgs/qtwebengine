@@ -1,0 +1,46 @@
+From 111349f18a4d352d40c1c106a6f8e98a9f843894 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Michael=20Br=C3=BCning?= <michael.bruning@qt.io>
+Date: Wed, 4 Sep 2019 11:51:34 +0200
+Subject: [PATCH] [macOS] Rename Chromium bootstrap name to prevent collisions
+
+In macOS applications that embed another version of Chromium or CEF,
+the names of our and the other Chromium's bootstrap service collide.
+This will make whichever instance comes second not work properly.
+
+Task-number: QTBUG-77938
+Change-Id: If0169c16f365692df5fe80a5de0d9f3ce78d6687
+Reviewed-by: Allan Sandfeld Jensen <allan.jensen@qt.io>
+---
+ chromium/content/browser/mach_broker_mac.mm                | 2 +-
+ chromium/services/service_manager/sandbox/mac/common_v2.sb | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/3rdparty/chromium/content/browser/mach_broker_mac.mm b/src/3rdparty/chromium/content/browser/mach_broker_mac.mm
+index 9b0da7da02f..97524248778 100644
+--- a/src/3rdparty/chromium/content/browser/mach_broker_mac.mm
++++ b/src/3rdparty/chromium/content/browser/mach_broker_mac.mm
+@@ -16,7 +16,7 @@
+ namespace content {
+ 
+ namespace {
+-const char kBootstrapName[] = "rohitfork";
++const char kBootstrapName[] = "qtrohitfork";
+ }
+ 
+ // static
+diff --git a/src/3rdparty/chromium/services/service_manager/sandbox/mac/common_v2.sb b/src/3rdparty/chromium/services/service_manager/sandbox/mac/common_v2.sb
+index 33c7c600142..9b3d46b4ed2 100644
+--- a/src/3rdparty/chromium/services/service_manager/sandbox/mac/common_v2.sb
++++ b/src/3rdparty/chromium/services/service_manager/sandbox/mac/common_v2.sb
+@@ -75,7 +75,7 @@
+ (allow file-read* (path (param executable-path)))
+ 
+ (allow mach-lookup (global-name (string-append (param bundle-id)
+-                                               ".rohitfork."
++                                               ".qtrohitfork."
+                                                (param browser-pid))))
+ 
+ ; Allow realpath() to work.
+-- 
+2.23.0
+

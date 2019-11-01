@@ -1,0 +1,177 @@
+From af3f9345ac4b883cf5f38d4f52936848ce502a71 Mon Sep 17 00:00:00 2001
+From: Allan Sandfeld Jensen <allan.jensen@qt.io>
+Date: Mon, 14 Oct 2019 14:09:35 +0200
+Subject: [PATCH] [Backport] Security issue 990234
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+sqlite: Backport bugfix (M77 Cherry-Pick)
+
+(cherry picked from commit 8dddf1d5d3f8525e028aee71be6a5bc2e1fe1098)
+
+Bug: 990234
+Change-Id: I6c8754c21ef2a1f5b712790cd43145e4853fea55
+Reviewed-by: Chris Mumford <cmumford@google.com>
+Commit-Queue: Darwin Huang <huangdarwin@chromium.org>
+Cr-Original-Commit-Position: refs/heads/master@{#700044}
+Cr-Commit-Position: refs/branch-heads/3865@{#873}
+Cr-Branched-From: 0cdcc6158160790658d1f033d3db873603250124-refs/heads/master@{#681094}
+Reviewed-by: Michal Klocek <michal.klocek@qt.io>
+Reviewed-by: Michael Brüning <michael.bruning@qt.io>
+---
+ .../third_party/sqlite/amalgamation/sqlite3.c | 29 ++++++++++++++-----
+ chromium/third_party/sqlite/src/src/attach.c  | 13 +++++++++
+ chromium/third_party/sqlite/src/src/trigger.c | 14 ++++-----
+ 3 files changed, 41 insertions(+), 15 deletions(-)
+
+diff --git a/src/3rdparty/chromium/third_party/sqlite/amalgamation/sqlite3.c b/src/3rdparty/chromium/third_party/sqlite/amalgamation/sqlite3.c
+index 30a3e643079..274a2434073 100644
+--- a/src/3rdparty/chromium/third_party/sqlite/amalgamation/sqlite3.c
++++ b/src/3rdparty/chromium/third_party/sqlite/amalgamation/sqlite3.c
+@@ -105485,6 +105485,7 @@ static void detachFunc(
+   sqlite3 *db = sqlite3_context_db_handle(context);
+   int i;
+   Db *pDb = 0;
++  HashElem *pEntry;
+   char zErr[128];
+ 
+   UNUSED_PARAMETER(NotUsed);
+@@ -105509,6 +105510,18 @@ static void detachFunc(
+     goto detach_error;
+   }
+ 
++  /* If any TEMP triggers reference the schema being detached, move those
++  ** triggers to reference the TEMP schema itself. */
++  assert( db->aDb[1].pSchema );
++  pEntry = sqliteHashFirst(&db->aDb[1].pSchema->trigHash);
++  while( pEntry ){
++    Trigger *pTrig = (Trigger*)sqliteHashData(pEntry);
++    if( pTrig->pTabSchema==pDb->pSchema ){
++      pTrig->pTabSchema = pTrig->pSchema;
++    }
++    pEntry = sqliteHashNext(pEntry);
++  }
++
+   sqlite3BtreeClose(pDb->pBt);
+   pDb->pBt = 0;
+   pDb->pSchema = 0;
+@@ -131551,10 +131564,9 @@ SQLITE_PRIVATE void sqlite3DropTriggerPtr(Parse *pParse, Trigger *pTrigger){
+   iDb = sqlite3SchemaToIndex(pParse->db, pTrigger->pSchema);
+   assert( iDb>=0 && iDb<db->nDb );
+   pTable = tableOfTrigger(pTrigger);
+-  assert( pTable );
+-  assert( pTable->pSchema==pTrigger->pSchema || iDb==1 );
++  assert( (pTable && pTable->pSchema==pTrigger->pSchema) || iDb==1 );
+ #ifndef SQLITE_OMIT_AUTHORIZATION
+-  {
++  if( pTable ){
+     int code = SQLITE_DROP_TRIGGER;
+     const char *zDb = db->aDb[iDb].zDbSName;
+     const char *zTab = SCHEMA_TABLE(iDb);
+@@ -131568,7 +131580,6 @@ SQLITE_PRIVATE void sqlite3DropTriggerPtr(Parse *pParse, Trigger *pTrigger){
+ 
+   /* Generate code to destroy the database record of the trigger.
+   */
+-  assert( pTable!=0 );
+   if( (v = sqlite3GetVdbe(pParse))!=0 ){
+     sqlite3NestedParse(pParse,
+        "DELETE FROM %Q.%s WHERE name=%Q AND type='trigger'",
+@@ -131592,9 +131603,11 @@ SQLITE_PRIVATE void sqlite3UnlinkAndDeleteTrigger(sqlite3 *db, int iDb, const ch
+   if( ALWAYS(pTrigger) ){
+     if( pTrigger->pSchema==pTrigger->pTabSchema ){
+       Table *pTab = tableOfTrigger(pTrigger);
+-      Trigger **pp;
+-      for(pp=&pTab->pTrigger; *pp!=pTrigger; pp=&((*pp)->pNext));
+-      *pp = (*pp)->pNext;
++      if( pTab ){
++        Trigger **pp;
++        for(pp=&pTab->pTrigger; *pp!=pTrigger; pp=&((*pp)->pNext));
++        *pp = (*pp)->pNext;
++      }
+     }
+     sqlite3DeleteTrigger(db, pTrigger);
+     db->mDbFlags |= DBFLAG_SchemaChange;
+@@ -220433,7 +220446,7 @@ SQLITE_API int sqlite3_stmt_init(
+ #endif /* !defined(SQLITE_CORE) || defined(SQLITE_ENABLE_STMTVTAB) */
+ 
+ /************** End of stmt.c ************************************************/
+-#if __LINE__!=220403
++#if __LINE__!=220449
+ #undef SQLITE_SOURCE_ID
+ #define SQLITE_SOURCE_ID      "2018-12-01 12:34:55 bf8c1b2b7a5960c282e543b9c293686dccff272512d08865f4600fb58238alt2"
+ #endif
+diff --git a/src/3rdparty/chromium/third_party/sqlite/src/src/attach.c b/src/3rdparty/chromium/third_party/sqlite/src/src/attach.c
+index fcb05046de2..1b50323f0a4 100644
+--- a/src/3rdparty/chromium/third_party/sqlite/src/src/attach.c
++++ b/src/3rdparty/chromium/third_party/sqlite/src/src/attach.c
+@@ -294,6 +294,7 @@ static void detachFunc(
+   sqlite3 *db = sqlite3_context_db_handle(context);
+   int i;
+   Db *pDb = 0;
++  HashElem *pEntry;
+   char zErr[128];
+ 
+   UNUSED_PARAMETER(NotUsed);
+@@ -318,6 +319,18 @@ static void detachFunc(
+     goto detach_error;
+   }
+ 
++  /* If any TEMP triggers reference the schema being detached, move those
++  ** triggers to reference the TEMP schema itself. */
++  assert( db->aDb[1].pSchema );
++  pEntry = sqliteHashFirst(&db->aDb[1].pSchema->trigHash);
++  while( pEntry ){
++    Trigger *pTrig = (Trigger*)sqliteHashData(pEntry);
++    if( pTrig->pTabSchema==pDb->pSchema ){
++      pTrig->pTabSchema = pTrig->pSchema;
++    }
++    pEntry = sqliteHashNext(pEntry);
++  }
++
+   sqlite3BtreeClose(pDb->pBt);
+   pDb->pBt = 0;
+   pDb->pSchema = 0;
+diff --git a/src/3rdparty/chromium/third_party/sqlite/src/src/trigger.c b/src/3rdparty/chromium/third_party/sqlite/src/src/trigger.c
+index cf31851f038..9638df468fb 100644
+--- a/src/3rdparty/chromium/third_party/sqlite/src/src/trigger.c
++++ b/src/3rdparty/chromium/third_party/sqlite/src/src/trigger.c
+@@ -613,10 +613,9 @@ void sqlite3DropTriggerPtr(Parse *pParse, Trigger *pTrigger){
+   iDb = sqlite3SchemaToIndex(pParse->db, pTrigger->pSchema);
+   assert( iDb>=0 && iDb<db->nDb );
+   pTable = tableOfTrigger(pTrigger);
+-  assert( pTable );
+-  assert( pTable->pSchema==pTrigger->pSchema || iDb==1 );
++  assert( (pTable && pTable->pSchema==pTrigger->pSchema) || iDb==1 );
+ #ifndef SQLITE_OMIT_AUTHORIZATION
+-  {
++  if( pTable ){
+     int code = SQLITE_DROP_TRIGGER;
+     const char *zDb = db->aDb[iDb].zDbSName;
+     const char *zTab = SCHEMA_TABLE(iDb);
+@@ -630,7 +629,6 @@ void sqlite3DropTriggerPtr(Parse *pParse, Trigger *pTrigger){
+ 
+   /* Generate code to destroy the database record of the trigger.
+   */
+-  assert( pTable!=0 );
+   if( (v = sqlite3GetVdbe(pParse))!=0 ){
+     sqlite3NestedParse(pParse,
+        "DELETE FROM %Q.%s WHERE name=%Q AND type='trigger'",
+@@ -654,9 +652,11 @@ void sqlite3UnlinkAndDeleteTrigger(sqlite3 *db, int iDb, const char *zName){
+   if( ALWAYS(pTrigger) ){
+     if( pTrigger->pSchema==pTrigger->pTabSchema ){
+       Table *pTab = tableOfTrigger(pTrigger);
+-      Trigger **pp;
+-      for(pp=&pTab->pTrigger; *pp!=pTrigger; pp=&((*pp)->pNext));
+-      *pp = (*pp)->pNext;
++      if( pTab ){
++        Trigger **pp;
++        for(pp=&pTab->pTrigger; *pp!=pTrigger; pp=&((*pp)->pNext));
++        *pp = (*pp)->pNext;
++      }
+     }
+     sqlite3DeleteTrigger(db, pTrigger);
+     db->mDbFlags |= DBFLAG_SchemaChange;
+-- 
+2.23.0
+
