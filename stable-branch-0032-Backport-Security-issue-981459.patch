@@ -54,5 +54,5 @@ index 645cbeef2cb..a2ab5eb1a36 100644
      if (AXObjectCache* cache = GetDocument().ExistingAXObjectCache())
        cache->ChildrenChanged(layout_embedded_content);
 -- 
-2.23.0
+2.24.0
 

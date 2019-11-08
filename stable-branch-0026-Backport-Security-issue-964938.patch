@@ -36,5 +36,5 @@ index b0f984026e4..0f2cffc1455 100644
      if (SolveLeastSquares(time, x, w, m, n, out_estimator->xcoeff, &xdet) &&
          SolveLeastSquares(time, y, w, m, n, out_estimator->ycoeff, &ydet)) {
 -- 
-2.23.0
+2.24.0
 

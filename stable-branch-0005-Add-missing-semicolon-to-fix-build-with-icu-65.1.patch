@@ -23,5 +23,5 @@ index e3a946a166b..4aaba25e6ae 100644
        if (saw_colon)
          return ParseQualifiedNameResult(kQNMultipleColons);
 -- 
-2.23.0
+2.24.0
 

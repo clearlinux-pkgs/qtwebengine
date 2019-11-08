@@ -35,5 +35,5 @@ index b3af4af7dd0..66fdad90e34 100644
    // We need to drop frame dispatcher, to prevent mojo calls from completing.
    frame_dispatcher_ = nullptr;
 -- 
-2.23.0
+2.24.0
 

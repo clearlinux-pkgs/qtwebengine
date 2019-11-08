@@ -70,5 +70,5 @@ index 65346aa6bd9..be1e62f474d 100644
          parent_box && !ParentIsConstructedOrHaveNext(parent_box);
      if (allowed_to_construct_new_box && !can_use_existing_parent_box) {
 -- 
-2.23.0
+2.24.0
 

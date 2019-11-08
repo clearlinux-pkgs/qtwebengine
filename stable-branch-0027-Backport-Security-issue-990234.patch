@@ -173,5 +173,5 @@ index cf31851f038..9638df468fb 100644
      sqlite3DeleteTrigger(db, pTrigger);
      db->mDbFlags |= DBFLAG_SchemaChange;
 -- 
-2.23.0
+2.24.0
 
