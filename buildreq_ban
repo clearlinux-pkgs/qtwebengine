@@ -1,2 +1,28 @@
 # This file contains build requirements that get picked up but are
 # undesirable. One entry per line, no whitespace.
+go-cloud.google.com-go
+go-github.com-aws-aws-sdk-go
+go-github.com-bifurcation-mint
+go-github.com-cenkalti-backoff
+go-github.com-cheekybits-genny
+go-github.com-flynn-json5
+go-github.com-golang-glog
+go-github.com-google-uuid
+go-github.com-grandcat-zeroconf
+go-github.com-hashicorp-golang-lru
+go-github.com-json-iterator-go
+go-github.com-lucas-clemente-aes12
+go-github.com-lucas-clemente-quic-go
+go-github.com-lucas-clemente-quic-go-certificates
+go-github.com-miekg-dns
+go-github.com-prometheus-tsdb
+go-github.com-ugorji-go-codec
+go-github.com-zserge-webview
+go-go.chromium.org-luci
+go-go.skia.org-infra
+go-golang.org-x-crypto
+go-golang.org-x-net
+go-golang.org-x-sys
+go-golang.org-x-tools
+go-google.golang.org-api
+go-sigs.k8s.io-structured-merge-diff

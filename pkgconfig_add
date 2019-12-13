@@ -6,6 +6,9 @@ glib-2.0
 harfbuzz
 jsoncpp
 lcms2
+libavcodec
+libavformat
+libavutil
 libevent
 libpng
 libpulse

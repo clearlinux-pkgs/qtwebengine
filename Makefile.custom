@@ -1,6 +1,6 @@
 GIT_DIR = ~/src/qt/qt5/qtwebengine/src/3rdparty
-GIT_BRANCH = origin/69-based
-GIT_TAG = v$(shell rpmspec --srpm -q --queryformat '%{VERSION}' qtwebengine.spec | sed 's/.clean//')
+GIT_BRANCH = origin/77-based
+GIT_TAG = v$(shell rpmspec --srpm -q --queryformat '%{VERSION}' qtwebengine.spec | sed 's/.reduced//')
 update:
 	sed -i '/^stable-branch/d' series
 	mkdir -p stable-branch

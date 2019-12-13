@@ -1,0 +1,4 @@
+#!/bin/sh
+pushd src/3rdparty/chromium
+./build/linux/unbundle/replace_gn_files.py --system-libraries ffmpeg flac
+popd
