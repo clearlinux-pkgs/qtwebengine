@@ -6,7 +6,7 @@ libQt5WebEngine.so.5:Qt_5.11
 libQt5WebEngine.so.5:Qt_5.12
 libQt5WebEngine.so.5:Qt_5.13
 libQt5WebEngine.so.5:Qt_5.14
-libQt5WebEngine.so.5:Qt_5.14.0_PRIVATE_API
+libQt5WebEngine.so.5:Qt_5.14.1_PRIVATE_API
 libQt5WebEngine.so.5:Qt_5.2
 libQt5WebEngine.so.5:Qt_5.3
 libQt5WebEngine.so.5:Qt_5.4
@@ -280,7 +280,7 @@ libQt5WebEngine.so.5:_ZN26QQuickWebEngineTouchHandle9setBoundsERK5QRect
 libQt5WebEngine.so.5:_ZN26QQuickWebEngineTouchHandleC1EPN15QtWebEngineCore18UIDelegatesManagerERK4QMapIi6QImageE
 libQt5WebEngine.so.5:_ZN26QQuickWebEngineTouchHandleC2EPN15QtWebEngineCore18UIDelegatesManagerERK4QMapIi6QImageE
 libQt5WebEngine.so.5:_ZN26QQuickWebEngineViewPrivate10setToolTipERK7QString
-libQt5WebEngine.so.5:_ZN26QQuickWebEngineViewPrivate10urlChangedERK4QUrl
+libQt5WebEngine.so.5:_ZN26QQuickWebEngineViewPrivate10urlChangedEv
 libQt5WebEngine.so.5:_ZN26QQuickWebEngineViewPrivate11iconChangedERK4QUrl
 libQt5WebEngine.so.5:_ZN26QQuickWebEngineViewPrivate11loadStartedERK4QUrlb
 libQt5WebEngine.so.5:_ZN26QQuickWebEngineViewPrivate11passOnFocusEb
@@ -739,7 +739,7 @@ libQt5WebEngineCore.so.5:Qt_5.11
 libQt5WebEngineCore.so.5:Qt_5.12
 libQt5WebEngineCore.so.5:Qt_5.13
 libQt5WebEngineCore.so.5:Qt_5.14
-libQt5WebEngineCore.so.5:Qt_5.14.0_PRIVATE_API
+libQt5WebEngineCore.so.5:Qt_5.14.1_PRIVATE_API
 libQt5WebEngineCore.so.5:Qt_5.2
 libQt5WebEngineCore.so.5:Qt_5.3
 libQt5WebEngineCore.so.5:Qt_5.4
@@ -748,7 +748,6 @@ libQt5WebEngineCore.so.5:Qt_5.6
 libQt5WebEngineCore.so.5:Qt_5.7
 libQt5WebEngineCore.so.5:Qt_5.8
 libQt5WebEngineCore.so.5:Qt_5.9
-libQt5WebEngineCore.so.5:_ZN11QtWebEngine11processMainEiPPKc
 libQt5WebEngineCore.so.5:_ZN14WebEngineError15toQtErrorDomainEi
 libQt5WebEngineCore.so.5:_ZN15QtWebEngineCore10UserScript10setWorldIdEj
 libQt5WebEngineCore.so.5:_ZN15QtWebEngineCore10UserScript13setSourceCodeERK7QString
@@ -773,6 +772,7 @@ libQt5WebEngineCore.so.5:_ZN15QtWebEngineCore11FaviconInfoC2ERKS0_
 libQt5WebEngineCore.so.5:_ZN15QtWebEngineCore11FaviconInfoC2Ev
 libQt5WebEngineCore.so.5:_ZN15QtWebEngineCore11FaviconInfoD1Ev
 libQt5WebEngineCore.so.5:_ZN15QtWebEngineCore11FaviconInfoD2Ev
+libQt5WebEngineCore.so.5:_ZN15QtWebEngineCore11processMainEiPPKc
 libQt5WebEngineCore.so.5:_ZN15QtWebEngineCore14FaviconManager12downloadIconERK4QUrl
 libQt5WebEngineCore.so.5:_ZN15QtWebEngineCore14FaviconManager13copyStateFromEPS0_
 libQt5WebEngineCore.so.5:_ZN15QtWebEngineCore14FaviconManager15resetCandidatesEv
@@ -961,6 +961,7 @@ libQt5WebEngineCore.so.5:_ZN15QtWebEngineCore18WebContentsAdapterC2ESt10unique_p
 libQt5WebEngineCore.so.5:_ZN15QtWebEngineCore18WebContentsAdapterC2Ev
 libQt5WebEngineCore.so.5:_ZN15QtWebEngineCore18WebContentsAdapterD1Ev
 libQt5WebEngineCore.so.5:_ZN15QtWebEngineCore18WebContentsAdapterD2Ev
+libQt5WebEngineCore.so.5:_ZN15QtWebEngineCore20FilePickerController11nameFiltersERK11QStringList
 libQt5WebEngineCore.so.5:_ZN15QtWebEngineCore20FilePickerController11qt_metacallEN11QMetaObject4CallEiPPv
 libQt5WebEngineCore.so.5:_ZN15QtWebEngineCore20FilePickerController11qt_metacastEPKc
 libQt5WebEngineCore.so.5:_ZN15QtWebEngineCore20FilePickerController22filesSelectedInChooserERK11QStringList
@@ -1435,7 +1436,7 @@ libQt5WebEngineWidgets.so.5:Qt_5.11
 libQt5WebEngineWidgets.so.5:Qt_5.12
 libQt5WebEngineWidgets.so.5:Qt_5.13
 libQt5WebEngineWidgets.so.5:Qt_5.14
-libQt5WebEngineWidgets.so.5:Qt_5.14.0_PRIVATE_API
+libQt5WebEngineWidgets.so.5:Qt_5.14.1_PRIVATE_API
 libQt5WebEngineWidgets.so.5:Qt_5.2
 libQt5WebEngineWidgets.so.5:Qt_5.3
 libQt5WebEngineWidgets.so.5:Qt_5.4

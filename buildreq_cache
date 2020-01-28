@@ -1,5 +1,2 @@
-5.14.0.reduced
+5.14.1.reduced
 pkgconfig(flac)
-pkgconfig(libavcodec)
-pkgconfig(libavformat)
-pkgconfig(libavutil)
