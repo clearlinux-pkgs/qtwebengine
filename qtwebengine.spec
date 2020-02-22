@@ -4,7 +4,7 @@
 #
 Name     : qtwebengine
 Version  : 5.14.1.reduced
-Release  : 32
+Release  : 33
 URL      : http://localhost/cgit/projects/qtwebengine/snapshot/qtwebengine-5.14.1-reduced.tar.xz
 Source0  : http://localhost/cgit/projects/qtwebengine/snapshot/qtwebengine-5.14.1-reduced.tar.xz
 Summary  : Ninja is a small build system with a focus on speed.
@@ -22,20 +22,17 @@ Requires: six
 BuildRequires : Jinja2
 BuildRequires : alsa-lib-dev
 BuildRequires : apache-ant
-BuildRequires : apache-maven
 BuildRequires : bison
 BuildRequires : buildreq-cmake
 BuildRequires : buildreq-cpan
 BuildRequires : buildreq-distutils3
 BuildRequires : buildreq-golang
 BuildRequires : buildreq-meson
-BuildRequires : buildreq-mvn
 BuildRequires : buildreq-qmake
 BuildRequires : docbook-xml
 BuildRequires : flex
 BuildRequires : gettext
 BuildRequires : gperf
-BuildRequires : gradle
 BuildRequires : gtk-doc
 BuildRequires : gtk-doc-dev
 BuildRequires : icu4c-dev
@@ -217,7 +214,7 @@ test -r config.log && cat config.log
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1580246987
+export SOURCE_DATE_EPOCH=1582330985
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/qtwebengine
 cp %{_builddir}/qtwebengine-5.14.1-reduced/LICENSE.Chromium %{buildroot}/usr/share/package-licenses/qtwebengine/44d95d73e9ffde5cd25aac40bce60bd553b9a478
