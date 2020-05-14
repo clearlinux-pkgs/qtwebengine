@@ -2,6 +2,7 @@
 # picked up automatically. One name per line, no whitespace.
 alsa-lib-dev
 bison
+double-conversion-dev
 flex
 gperf
 icu4c-dev
