@@ -4,7 +4,7 @@
 #
 Name     : qtwebengine
 Version  : 5.15.0.reduced
-Release  : 38
+Release  : 39
 URL      : http://localhost/cgit/projects/qtwebengine/snapshot/qtwebengine-5.15.0-reduced.tar.xz
 Source0  : http://localhost/cgit/projects/qtwebengine/snapshot/qtwebengine-5.15.0-reduced.tar.xz
 Summary  : Ninja is a small build system with a focus on speed.
@@ -208,10 +208,10 @@ export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
 export GCC_IGNORE_WERROR=1
-export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FCFLAGS="$FFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FFLAGS="$FFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
-export CXXFLAGS="$CXXFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CFLAGS="$CFLAGS -fstack-protector-strong -fzero-call-used-regs=used "
+export FCFLAGS="$FFLAGS -fstack-protector-strong -fzero-call-used-regs=used "
+export FFLAGS="$FFLAGS -fstack-protector-strong -fzero-call-used-regs=used "
+export CXXFLAGS="$CXXFLAGS -fstack-protector-strong -fzero-call-used-regs=used "
 %qmake QMAKE_CFLAGS+=-fno-lto QMAKE_CXXFLAGS+=-fno-lto  -- \
 -webengine-system-fontconfig \
 -webengine-system-nss \
