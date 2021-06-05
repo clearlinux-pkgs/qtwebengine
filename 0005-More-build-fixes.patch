@@ -1,0 +1,22 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Patrick McCarty <patrick.mccarty@intel.com>
+Date: Fri, 4 Jun 2021 20:49:08 -0700
+Subject: [PATCH] More build fixes
+
+Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
+---
+ .../src/trace_processor/importers/proto/heap_graph_walker.h      | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/3rdparty/chromium/third_party/perfetto/src/trace_processor/importers/proto/heap_graph_walker.h b/src/3rdparty/chromium/third_party/perfetto/src/trace_processor/importers/proto/heap_graph_walker.h
+index c05c6df45..8033c5df4 100644
+--- a/src/3rdparty/chromium/third_party/perfetto/src/trace_processor/importers/proto/heap_graph_walker.h
++++ b/src/3rdparty/chromium/third_party/perfetto/src/trace_processor/importers/proto/heap_graph_walker.h
+@@ -21,6 +21,7 @@
+ #include <map>
+ #include <set>
+ #include <vector>
++#include <cstddef>
+ 
+ // Implements two algorithms that walk a HeapGraph.
+ // a) Traverse all references from roots and mark the nodes as reachable.

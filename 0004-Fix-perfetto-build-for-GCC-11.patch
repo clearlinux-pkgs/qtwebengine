@@ -1,0 +1,25 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Peter Varga <pvarga@inf.u-szeged.hu>
+Date: Fri, 7 May 2021 15:20:12 +0200
+Subject: [PATCH] Fix perfetto build for GCC 11
+
+Change-Id: I812059fb02597cad329907e026a7c8afe839d04c
+Reviewed-by: Allan Sandfeld Jensen <allan.jensen@qt.io>
+Backported-to: 5.15.0
+Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
+---
+ .../third_party/perfetto/src/trace_processor/string_pool.h       | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/3rdparty/chromium/third_party/perfetto/src/trace_processor/string_pool.h b/src/3rdparty/chromium/third_party/perfetto/src/trace_processor/string_pool.h
+index 809846ce7..129223330 100644
+--- a/src/3rdparty/chromium/third_party/perfetto/src/trace_processor/string_pool.h
++++ b/src/3rdparty/chromium/third_party/perfetto/src/trace_processor/string_pool.h
+@@ -20,6 +20,7 @@
+ #include <stddef.h>
+ #include <stdint.h>
+ 
++#include <limits>
+ #include <unordered_map>
+ #include <vector>
+ 

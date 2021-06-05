@@ -1,4 +1,4 @@
-From aa98f47530c89de7bf44eb713690ccd4f4137666 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Thiago Macieira <thiago.macieira@intel.com>
 Date: Tue, 29 Jan 2019 21:54:35 -0800
 Subject: [PATCH] Pass -j flags from the outer make to ninja
@@ -14,10 +14,10 @@ Change-Id: I32d7cf321e3a459a9ae6fffd157e8a97a8996821
  1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/src/core/gn_run.pro b/src/core/gn_run.pro
-index 377d8363..390f4cee 100644
+index 8b16d7c59..a1ed90568 100644
 --- a/src/core/gn_run.pro
 +++ b/src/core/gn_run.pro
-@@ -47,10 +47,19 @@ build_pass|!debug_and_release {
+@@ -48,10 +48,19 @@ build_pass|!debug_and_release {
          error("GN run error!")
      }
  
@@ -38,6 +38,3 @@ index 377d8363..390f4cee 100644
      QMAKE_EXTRA_TARGETS += runninja
  
      build_pass:build_all: default_target.target = all
--- 
-2.24.0
-

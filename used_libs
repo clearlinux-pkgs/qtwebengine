@@ -32,9 +32,10 @@ libnssutil3.so
 libopus.so.0
 libpng16.so.16
 libpthread.so.0
-libre2.so.7
+libre2.so.9
 libsnappy.so.1
 libstdc++.so.6
+libvpx.so.6
 libwebp.so.7
 libwebpdemux.so.2
 libwebpmux.so.3

@@ -1,4 +1,4 @@
-From e18b6c33a12af97786efc2bb5f5e1b1d68d83bed Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Thiago Macieira <thiago.macieira@intel.com>
 Date: Wed, 9 Oct 2019 15:08:49 -0700
 Subject: [PATCH] Make the warning "will not be built" an error
@@ -9,18 +9,15 @@ Change-Id: Ice82936da3fe451a8d17fffd15cc19f97651745d
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/src.pro b/src/src.pro
-index de88878a..040601ca 100644
+index 063c148b5..e9c321f4a 100644
 --- a/src/src.pro
 +++ b/src/src.pro
-@@ -40,7 +40,7 @@ qtConfig(build-qtwebengine-core):qtConfig(webengine-core-support) {
+@@ -55,7 +55,7 @@ qtConfig(build-qtpdf):qtConfig(webengine-qtpdf-support) {
  
- !qtConfig(webengine-core-support): qtConfig(build-qtwebengine-core) {
+ !qtConfig(webengine-core-support):if(qtConfig(build-qtwebengine-core)|qtConfig(build-qtpdf)) {
      !qtwebengine_makeCheckError():!isEmpty(skipBuildReason):!build_pass {
 -        errorbuild.commands = @echo Modules will not be built. $${skipBuildReason}
 +        error(Modules will not be built. $${skipBuildReason})
          errorbuild.CONFIG = phony
          QMAKE_EXTRA_TARGETS += errorbuild
          first.depends += errorbuild
--- 
-2.24.0
-

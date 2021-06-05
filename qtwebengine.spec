@@ -4,7 +4,7 @@
 #
 Name     : qtwebengine
 Version  : 5.15.0.reduced
-Release  : 39
+Release  : 40
 URL      : http://localhost/cgit/projects/qtwebengine/snapshot/qtwebengine-5.15.0-reduced.tar.xz
 Source0  : http://localhost/cgit/projects/qtwebengine/snapshot/qtwebengine-5.15.0-reduced.tar.xz
 Summary  : Ninja is a small build system with a focus on speed.
@@ -112,6 +112,9 @@ BuildRequires : snappy-dev
 Patch1: 0001-Pass-j-flags-from-the-outer-make-to-ninja.patch
 Patch2: 0002-Make-the-warning-will-not-be-built-an-error.patch
 Patch3: 0003-Update-the-generated-file-list-for-not-ffmpeg.patch
+Patch4: 0004-Fix-perfetto-build-for-GCC-11.patch
+Patch5: 0005-More-build-fixes.patch
+Patch6: 0006-Fix-bison-3.7.patch
 
 %description
 Ninja is yet another build system. It takes as input the interdependencies of files (typically source code and output executables) and
@@ -196,6 +199,9 @@ cd %{_builddir}/qtwebengine-5.15.0-reduced
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
+%patch5 -p1
+%patch6 -p1
 
 %build
 ## build_prepend content
@@ -212,7 +218,8 @@ export CFLAGS="$CFLAGS -fstack-protector-strong -fzero-call-used-regs=used "
 export FCFLAGS="$FFLAGS -fstack-protector-strong -fzero-call-used-regs=used "
 export FFLAGS="$FFLAGS -fstack-protector-strong -fzero-call-used-regs=used "
 export CXXFLAGS="$CXXFLAGS -fstack-protector-strong -fzero-call-used-regs=used "
-%qmake QMAKE_CFLAGS+=-fno-lto QMAKE_CXXFLAGS+=-fno-lto  -- \
+%qmake QMAKE_CFLAGS+=-fno-lto QMAKE_CXXFLAGS+=-fno-lto  CONFIG+=silent \
+-- \
 -webengine-system-fontconfig \
 -webengine-system-nss \
 -webengine-system-ffmpeg \
@@ -224,7 +231,7 @@ test -r config.log && cat config.log
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1590620120
+export SOURCE_DATE_EPOCH=1622868132
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/qtwebengine
 cp %{_builddir}/qtwebengine-5.15.0-reduced/LICENSE.Chromium %{buildroot}/usr/share/package-licenses/qtwebengine/44d95d73e9ffde5cd25aac40bce60bd553b9a478
@@ -234,6 +241,7 @@ cp %{_builddir}/qtwebengine-5.15.0-reduced/LICENSE.GPL3 %{buildroot}/usr/share/p
 cp %{_builddir}/qtwebengine-5.15.0-reduced/LICENSE.GPL3-EXCEPT %{buildroot}/usr/share/package-licenses/qtwebengine/e93757aefa405f2c9a8a55e780ae9c39542dfc3a
 cp %{_builddir}/qtwebengine-5.15.0-reduced/LICENSE.GPLv3 %{buildroot}/usr/share/package-licenses/qtwebengine/7d974f34cf5fd474f0fdf6ebc8d410ea5c8b72de
 cp %{_builddir}/qtwebengine-5.15.0-reduced/LICENSE.LGPL3 %{buildroot}/usr/share/package-licenses/qtwebengine/3e14af11ba18dbb289fda3a9f35d7519536c3594
+cp %{_builddir}/qtwebengine-5.15.0-reduced/LICENSE.LGPLv3 %{buildroot}/usr/share/package-licenses/qtwebengine/626b87b9a2a666df28a70d98cd067b19d651ecad
 cp %{_builddir}/qtwebengine-5.15.0-reduced/examples/webengine/quicknanobrowser/icons/3rdparty/COPYING %{buildroot}/usr/share/package-licenses/qtwebengine/6be44a162236be42aebb8409ac2be9a46641674e
 cp %{_builddir}/qtwebengine-5.15.0-reduced/examples/webengine/recipebrowser/resources/pages/assets/3rdparty/MARKDOWN-LICENSE.txt %{buildroot}/usr/share/package-licenses/qtwebengine/ffe23770d35d56efca0f07512e284deb32fbac07
 cp %{_builddir}/qtwebengine-5.15.0-reduced/examples/webengine/recipebrowser/resources/pages/assets/3rdparty/MARKED-LICENSE.txt %{buildroot}/usr/share/package-licenses/qtwebengine/4f17341b733d58a4dcd1576d66abff2c5e0d310f
@@ -394,6 +402,7 @@ cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/dev
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/ansi-regex/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/5aaf48196ddd4d007a3067aa7f30303ca8e4b29c
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/ansi-styles/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/5aaf48196ddd4d007a3067aa7f30303ca8e4b29c
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/ansi-wrap/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/f6794e2167dc92e7ab5f2b00a15f0af45639a5a1
+cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/anymatch/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/c5f71fe0fdbc0ea810daa6b5e03d7af2afee49a3
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/append-transform/license %{buildroot}/usr/share/package-licenses/qtwebengine/76a1abf5ae34f3a0ccdeff35879f4b42c24c333e
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/argparse/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/dbbafd9d668fb6b582e4b4e3c5f3e893a353f5ef
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/arr-diff/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/b4e100fe8f109af7c7a5eba6b8ddb4c75be99a5a
@@ -419,6 +428,7 @@ cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/dev
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/brace-expansion/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/433c2b9c71bad0957f4831068c2f5d973cef98a9
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/braces/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/8e9f50463a3d515808c3a428e18049425d584c1c
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/browser-resolve/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/20b0b155e731ae17f410fa769c3c709001b29945
+cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/browser-stdout/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/4bddf34fb5dbd91bb6aae59cf7bf898790a41daa
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/browserify-aes/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/25f675533411aa1987c5149ee59c96292934d95c
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/browserify-cipher/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/0e28bbf1c7c1fefe9175015d6330823f1f28f6bc
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/browserify-des/license %{buildroot}/usr/share/package-licenses/qtwebengine/5f8f6c8a52f253b4fa10b10806039bec5b27471b
@@ -534,6 +544,7 @@ cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/dev
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/extend-shallow/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/8b58a721a73521199654b7b165966a19b1f548fd
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/extend/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/bed93ae1abcd71e5d1c9c363595dd24bb1b9016c
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/external-editor/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/c494d8d5f5398821347570b262497d9ed1686a48
+cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/extract-zip/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/dfb0cb7a29aadd771a9644c07fc6d8b0df156a6d
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/extract-zip/node_modules/debug/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/d16a2786962571280a11cae01d5e59aeb1351c9a
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/extract-zip/node_modules/ms/license.md %{buildroot}/usr/share/package-licenses/qtwebengine/884e84ebfddafd93b5bb814df076d2ebd1757ba8
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/fast-deep-equal/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/44bdc0699c385cdf423dbadea7355ff72e5adc36
@@ -871,6 +882,7 @@ cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/dev
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/type-is/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/6a4ed3b5e9cff68af7593dfcb8be3c1cbea837d0
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/typedarray/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/c2b6e9dfdcb944a46af4f9b42ff1f3543a2aacce
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/typescript/LICENSE.txt %{buildroot}/usr/share/package-licenses/qtwebengine/d9b9e4a9ac5dc9cd88457ae8c5fb777880909fe2
+cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/uglify-js/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/7ff32116831e1e4e15fcc6341492dcffdc117948
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/ultron/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/5ad90133cb189c11a7b1e1635a431aeb3e8ddf68
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/universalify/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/286f0ec32934adf077d1b587c77b7ed02d7ba8f9
 cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/chromium/third_party/devtools-frontend/src/node_modules/unpipe/LICENSE %{buildroot}/usr/share/package-licenses/qtwebengine/140c0ed7f877e74246d459750884aadd7f3466a0
@@ -1965,6 +1977,7 @@ cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/ninja/COPYING %{buildroo
 /usr/share/package-licenses/qtwebengine/495850c16b7c2daa4fccfe01f8029cfd661928ff
 /usr/share/package-licenses/qtwebengine/499c0384a9fa3e136b25f343fa439e827331d397
 /usr/share/package-licenses/qtwebengine/4ae7988e5af66b48b6d74a70fb30c4aedda141ee
+/usr/share/package-licenses/qtwebengine/4bddf34fb5dbd91bb6aae59cf7bf898790a41daa
 /usr/share/package-licenses/qtwebengine/4c27231820c7478321985a0404c1e8d597e0d2c3
 /usr/share/package-licenses/qtwebengine/4c46a1174c20e1d600ee083a1ef85ed7bbae2eb2
 /usr/share/package-licenses/qtwebengine/4c5d1ca79ad3d544442c39f03be407dfa4788fd7
@@ -2018,6 +2031,7 @@ cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/ninja/COPYING %{buildroo
 /usr/share/package-licenses/qtwebengine/5fad7a0f1c1a213270b0cdad194c4d5529dd7c70
 /usr/share/package-licenses/qtwebengine/60113525223c0ee650c7d07b3a4e2c240e9ff53b
 /usr/share/package-licenses/qtwebengine/6210a5e4e9224b4fc8ef250fe227311daa2bc5ac
+/usr/share/package-licenses/qtwebengine/626b87b9a2a666df28a70d98cd067b19d651ecad
 /usr/share/package-licenses/qtwebengine/6318a62fc01793796b5b977ad67c7a91816e4171
 /usr/share/package-licenses/qtwebengine/63513188251d15fcdc716703fbee89be4a3a20e6
 /usr/share/package-licenses/qtwebengine/635c546f061cb4171c7cf65409471926a89647d3
@@ -2082,6 +2096,7 @@ cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/ninja/COPYING %{buildroo
 /usr/share/package-licenses/qtwebengine/7ec64594ca6b82be887ae5664d6881865d47bb1d
 /usr/share/package-licenses/qtwebengine/7ed88ea8360e740c8d2a11fa4d20159273ec865a
 /usr/share/package-licenses/qtwebengine/7ff2266399222ca61419b5d38715b4db2d4f527e
+/usr/share/package-licenses/qtwebengine/7ff32116831e1e4e15fcc6341492dcffdc117948
 /usr/share/package-licenses/qtwebengine/80c402e0ed29446767389cff984ee620ddb3634d
 /usr/share/package-licenses/qtwebengine/819e6935c5ac3ae7bcb7470cb81c07cc383e80eb
 /usr/share/package-licenses/qtwebengine/82368de7809f2afd54714ba6896d731dc2944e3c
@@ -2222,6 +2237,7 @@ cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/ninja/COPYING %{buildroo
 /usr/share/package-licenses/qtwebengine/c494d8d5f5398821347570b262497d9ed1686a48
 /usr/share/package-licenses/qtwebengine/c4c74f60713e9765f16f8a016c1f997ca648f910
 /usr/share/package-licenses/qtwebengine/c4d6d6cfd18041480abed5fef0e5e8b05a967b55
+/usr/share/package-licenses/qtwebengine/c5f71fe0fdbc0ea810daa6b5e03d7af2afee49a3
 /usr/share/package-licenses/qtwebengine/c68e9597fe0b6ee46f64adb92942b38f82ddbf1d
 /usr/share/package-licenses/qtwebengine/c700a8b9312d24bdc57570f7d6a131cf63d89016
 /usr/share/package-licenses/qtwebengine/c717ffdcdd887f546464772640d09fca3868b05b
@@ -2279,6 +2295,7 @@ cp %{_builddir}/qtwebengine-5.15.0-reduced/src/3rdparty/ninja/COPYING %{buildroo
 /usr/share/package-licenses/qtwebengine/de025c02282b0dc284dd08575619a4dcf536baea
 /usr/share/package-licenses/qtwebengine/df2218fb8f21ea47bedfd5f9f692bbc7ed575ab4
 /usr/share/package-licenses/qtwebengine/dfada97ba32cb44804736a7768104a06be91a4f7
+/usr/share/package-licenses/qtwebengine/dfb0cb7a29aadd771a9644c07fc6d8b0df156a6d
 /usr/share/package-licenses/qtwebengine/e08f3ece4e1e4bf045e487fedc984184900aceb2
 /usr/share/package-licenses/qtwebengine/e21d1daa8d25cf4e44f5d017e9adc66c5e581250
 /usr/share/package-licenses/qtwebengine/e310076ee4f65219003bfae2427646e0236c5141

@@ -1,4 +1,4 @@
-From 4fa140fc090ba7a9c22f43a4cd658996cc940858 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Thiago Macieira <thiago.macieira@intel.com>
 Date: Wed, 11 Dec 2019 23:12:29 -0800
 Subject: [PATCH] Update the generated file list for not-ffmpeg
@@ -7,13 +7,13 @@ To regenerate:
   cd src/3rdparty/chromium/third_party/ffmpeg
   perl -pi -e 'if (/^\s*"(lib.*)",/) { $_ = "" unless -f $1; }' ffmpeg_generated.gni
 ---
- .../third_party/ffmpeg/ffmpeg_generated.gni   | 119 ------------------
- 1 file changed, 119 deletions(-)
+ .../third_party/ffmpeg/ffmpeg_generated.gni   | 71 -------------------
+ 1 file changed, 71 deletions(-)
 
-diff --git i/src/3rdparty/chromium/third_party/ffmpeg/ffmpeg_generated.gni w/src/3rdparty/chromium/third_party/ffmpeg/ffmpeg_generated.gni
-index 4343c26086..87e0d87510 100644
---- i/src/3rdparty/chromium/third_party/ffmpeg/ffmpeg_generated.gni
-+++ w/src/3rdparty/chromium/third_party/ffmpeg/ffmpeg_generated.gni
+diff --git a/src/3rdparty/chromium/third_party/ffmpeg/ffmpeg_generated.gni b/src/3rdparty/chromium/third_party/ffmpeg/ffmpeg_generated.gni
+index 4343c2608..87e0d8751 100644
+--- a/src/3rdparty/chromium/third_party/ffmpeg/ffmpeg_generated.gni
++++ b/src/3rdparty/chromium/third_party/ffmpeg/ffmpeg_generated.gni
 @@ -186,8 +186,6 @@ if ((is_android && current_cpu == "arm" && arm_use_neon) || (is_android && curre
      "libavutil/timecode.c",
      "libavutil/twofish.c",

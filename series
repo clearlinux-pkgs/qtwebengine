@@ -1,3 +1,6 @@
 0001-Pass-j-flags-from-the-outer-make-to-ninja.patch
 0002-Make-the-warning-will-not-be-built-an-error.patch
 0003-Update-the-generated-file-list-for-not-ffmpeg.patch
+0004-Fix-perfetto-build-for-GCC-11.patch
+0005-More-build-fixes.patch
+0006-Fix-bison-3.7.patch
