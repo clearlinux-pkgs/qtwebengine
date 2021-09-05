@@ -9,7 +9,7 @@ Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/src/3rdparty/chromium/third_party/perfetto/src/trace_processor/importers/proto/heap_graph_walker.h b/src/3rdparty/chromium/third_party/perfetto/src/trace_processor/importers/proto/heap_graph_walker.h
-index c05c6df45..8033c5df4 100644
+index e034f1a37..6c4f7b5fc 100644
 --- a/src/3rdparty/chromium/third_party/perfetto/src/trace_processor/importers/proto/heap_graph_walker.h
 +++ b/src/3rdparty/chromium/third_party/perfetto/src/trace_processor/importers/proto/heap_graph_walker.h
 @@ -21,6 +21,7 @@
