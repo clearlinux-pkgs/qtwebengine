@@ -4,7 +4,7 @@
 #
 Name     : qtwebengine
 Version  : 5.15.2.reduced
-Release  : 41
+Release  : 42
 URL      : http://localhost/cgit/projects/qtwebengine/snapshot/qtwebengine-5.15.2-reduced.tar.xz
 Source0  : http://localhost/cgit/projects/qtwebengine/snapshot/qtwebengine-5.15.2-reduced.tar.xz
 Summary  : Ninja is a small build system with a focus on speed.
@@ -23,7 +23,6 @@ Requires: six
 BuildRequires : Jinja2
 BuildRequires : MarkupSafe
 BuildRequires : alsa-lib-dev
-BuildRequires : apache-ant
 BuildRequires : bison
 BuildRequires : buildreq-cmake
 BuildRequires : buildreq-cpan
