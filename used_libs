@@ -25,6 +25,7 @@ libharfbuzz.so.0
 libjpeg.so.62
 liblcms2.so.2
 libm.so.6
+libminizip.so.1
 libnspr4.so
 libnss3.so
 libnssutil3.so
@@ -33,7 +34,7 @@ libpng16.so.16
 libre2.so.9
 libsnappy.so.1
 libstdc++.so.6
-libvpx.so.6
+libvpx.so.7
 libwebp.so.7
 libwebpdemux.so.2
 libwebpmux.so.3

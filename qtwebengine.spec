@@ -4,7 +4,7 @@
 #
 Name     : qtwebengine
 Version  : 5.15.2.reduced
-Release  : 42
+Release  : 43
 URL      : http://localhost/cgit/projects/qtwebengine/snapshot/qtwebengine-5.15.2-reduced.tar.xz
 Source0  : http://localhost/cgit/projects/qtwebengine/snapshot/qtwebengine-5.15.2-reduced.tar.xz
 Summary  : Ninja is a small build system with a focus on speed.
@@ -15,13 +15,6 @@ Requires: qtwebengine-data = %{version}-%{release}
 Requires: qtwebengine-lib = %{version}-%{release}
 Requires: qtwebengine-libexec = %{version}-%{release}
 Requires: qtwebengine-license = %{version}-%{release}
-Requires: Jinja2
-Requires: MarkupSafe
-Requires: nose
-Requires: setuptools
-Requires: six
-BuildRequires : Jinja2
-BuildRequires : MarkupSafe
 BuildRequires : alsa-lib-dev
 BuildRequires : bison
 BuildRequires : buildreq-cmake
@@ -43,7 +36,6 @@ BuildRequires : libsrtp-dev
 BuildRequires : libvpx-dev
 BuildRequires : libxslt-bin
 BuildRequires : ninja
-BuildRequires : nose
 BuildRequires : perl(XML::Parser)
 BuildRequires : pkgconfig(Qt5Core)
 BuildRequires : pkgconfig(Qt5Designer)
@@ -102,12 +94,19 @@ BuildRequires : pkgconfig(xkbcommon)
 BuildRequires : pkgconfig(xrandr)
 BuildRequires : pkgconfig(xtst)
 BuildRequires : pkgconfig(zlib)
+BuildRequires : pypi(jinja2)
+BuildRequires : pypi(markupsafe)
+BuildRequires : pypi(mock)
+BuildRequires : pypi(nose)
+BuildRequires : pypi(pylint)
+BuildRequires : pypi(setuptools)
+BuildRequires : pypi(six)
+BuildRequires : pypi(sphinx)
+BuildRequires : pypi(tox)
 BuildRequires : python
 BuildRequires : qttools-dev
 BuildRequires : re2-dev
 BuildRequires : sed
-BuildRequires : setuptools
-BuildRequires : six
 BuildRequires : snappy-dev
 Patch1: 0001-Pass-j-flags-from-the-outer-make-to-ninja.patch
 Patch2: 0002-Update-the-generated-file-list-for-not-ffmpeg.patch
@@ -229,7 +228,7 @@ test -r config.log && cat config.log
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1630816440
+export SOURCE_DATE_EPOCH=1641984855
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/qtwebengine
 cp %{_builddir}/qtwebengine-5.15.2-reduced/LICENSE.Chromium %{buildroot}/usr/share/package-licenses/qtwebengine/44d95d73e9ffde5cd25aac40bce60bd553b9a478

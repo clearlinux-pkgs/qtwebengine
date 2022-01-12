@@ -1,2 +1,9 @@
 5.15.2.reduced
 pkgconfig(xkbcommon)
+pypi(jinja2)
+pypi(markupsafe)
+pypi(mock)
+pypi(nose)
+pypi(pylint)
+pypi(sphinx)
+pypi(tox)
