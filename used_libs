@@ -31,10 +31,10 @@ libnss3.so
 libnssutil3.so
 libopus.so.0
 libpng16.so.16
-libre2.so.9
+libre2.so.10
 libsnappy.so.1
 libstdc++.so.6
-libvpx.so.7
+libvpx.so.8
 libwebp.so.7
 libwebpdemux.so.2
 libwebpmux.so.3
